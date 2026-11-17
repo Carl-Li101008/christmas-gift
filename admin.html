@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>树洞管理员 · Merry &amp; Bright</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <div class="admin-bg" aria-hidden="true"><i></i><i></i><i></i></div>
+  <header class="admin-top">
+    <a class="admin-brand" href="./" aria-label="回到圣诞礼物交换所">
+      <span class="admin-mark">✦</span>
+      <span><strong>树洞管理员</strong><small>TREE KEEPER · MERRY &amp; BRIGHT</small></span>
+    </a>
+    <div class="admin-status" id="connectionStatus"><i></i><span>未连接</span></div>
+  </header>
+
+  <main id="loginView" class="login-wrap">
+    <section class="login-card">
+      <span class="eyebrow">PRIVATE KEEPER'S DESK</span>
+      <h1>今晚的树，<br /><em>由你照看。</em></h1>
+      <p>这里可以处理不合适的人物、隐藏树上的形象，也可以看到大家提交的举报。管理口令只保存在这个页面的本地校验里，不会出现在公共页面。</p>
+      <form id="loginForm">
+        <label class="field-label" for="passInput">管理口令</label>
+        <input id="passInput" type="password" autocomplete="current-password" placeholder="输入管理员口令" />
+        <p class="login-error" id="loginError" hidden>口令不对，再试一次。</p>
+        <button class="btn-primary" type="submit">进入管理台 <span>→</span></button>
+      </form>
+      <p class="login-note">轻量管理台：适合朋友之间维护这棵公共树，不是强安全后台。如果忘记口令，可以联系搭建者修改 <code>admin.js</code> 中的口令哈希。</p>
+    </section>
+    <aside class="login-art" aria-hidden="true">
+      <div class="login-moon"></div>
+      <div class="login-tree"><i></i><i></i><i></i><b>★</b></div>
+      <div class="login-copy">KEEP THE TREE<br /><em>KIND &amp; BRIGHT.</em></div>
+    </aside>
+  </main>
+
+  <main id="dashView" class="dash-wrap" hidden>
+    <section class="dash-head">
+      <div>
+        <span class="eyebrow">LIVE TREE · MODERATION DESK</span>
+        <h1>公共圣诞树<br /><em>管理台。</em></h1>
+      </div>
+      <div class="dash-head-actions">
+        <button class="btn-ghost" type="button" id="exportBtn">导出数据</button>
+        <button class="btn-ghost" type="button" id="logoutBtn">退出</button>
+      </div>
+    </section>
+
+    <section class="stat-row" aria-label="圣诞树数据">
+      <article class="stat-card"><span>总人数</span><strong id="statTotal">0</strong><small>领取过形象</small></article>
+      <article class="stat-card"><span>在树上</span><strong id="statOnTree">0</strong><small>公开可见</small></article>
+      <article class="stat-card"><span>已封禁</span><strong id="statBanned">0</strong><small>无法再送出</small></article>
+      <article class="stat-card is-alert"><span>待处理举报</span><strong id="statReports">0</strong><small>需要你判断</small></article>
+    </section>
+
+    <section class="toolbar">
+      <div class="tabs" role="tablist" aria-label="管理筛选">
+        <button class="tab is-active" type="button" data-tab="tree">全部成员 <b id="tabTreeCount">0</b></button>
+        <button class="tab" type="button" data-tab="banned">封禁名单 <b id="tabBannedCount">0</b></button>
+        <button class="tab" type="button" data-tab="reports">举报 <b id="tabReportCount">0</b></button>
+      </div>
+      <label class="search-box"><span>搜</span><input id="searchInput" type="search" placeholder="名字 / 动物 / 装扮" autocomplete="off" /></label>
+    </section>
+
+    <section id="membersPanel" class="panel">
+      <div class="panel-head"><div><span class="eyebrow">MEMBERS</span><h2>树上的成员</h2></div><p>封禁会立刻把人物从公共树上移除；隐藏只会暂时取下，之后可恢复。</p></div>
+      <div id="memberGrid" class="member-grid"></div>
+      <p class="empty-state" id="memberEmpty" hidden>这里还没有符合条件的人。</p>
+    </section>
+
+    <section id="reportsPanel" class="panel" hidden>
+      <div class="panel-head"><div><span class="eyebrow">REPORTS</span><h2>举报与处理</h2></div><p>举报来自树上的“举报这个形象”。处理后会从待处理列表里消失。</p></div>
+      <div id="reportList" class="report-list"></div>
+      <p class="empty-state" id="reportEmpty" hidden>暂时没有待处理的举报。今晚的树很安静。</p>
+    </section>
+  </main>
+
+  <div class="admin-modal" id="adminModal" hidden>
+    <div class="admin-modal-card" role="dialog" aria-modal="true" aria-labelledby="adminModalTitle">
+      <h3 id="adminModalTitle">封禁这个人？</h3>
+      <p id="adminModalCopy">封禁后，ta 的形象会立刻从公共树上消失，也无法再送出礼物。</p>
+      <label class="field-label" for="banReasonInput">原因（可选，会显示在被封禁者的提示里）</label>
+      <input id="banReasonInput" maxlength="60" placeholder="例如：冒充别人 / 刷屏捣乱" />
+      <div class="admin-modal-actions">
+        <button class="btn-ghost" type="button" id="modalCancel">取消</button>
+        <button class="btn-danger" type="button" id="modalConfirm">确认封禁</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-toast" id="adminToast" role="status" aria-live="polite"></div>
+
+  <script src="mqtt.min.js"></script>
+  <script src="shared.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
