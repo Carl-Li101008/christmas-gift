@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#101a33" />
+  <meta name="description" content="圣诞礼物交换所：领一只专属小动物，挂上圣诞树；写一封匿名或署名的贺卡，让圣诞老人替你送达；再和 TA 玩一场圣诞默契测试。" />
+  <meta property="og:title" content="圣诞礼物交换所 · 把一份礼物挂进圣诞夜" />
+  <meta property="og:description" content="领一只独一无二的小动物，写一封匿名或署名的圣诞贺卡，再和 TA 测一测默契。Merry & Bright。" />
+  <meta property="og:type" content="website" />
+  <title>圣诞礼物交换所 · Merry &amp; Bright</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23101a33'/%3E%3Cpath d='M32 9l5.7 15.3L54 30l-16.3 5.7L32 52l-5.7-16.3L10 30l16.3-5.7z' fill='%23ffd34d'/%3E%3Ccircle cx='32' cy='30' r='6' fill='%23e8423f'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <noscript>
+    <div style="position:fixed;inset:0;z-index:999;display:grid;place-items:center;padding:24px;background:#101a33;color:#fff6e4;font-family:'Microsoft YaHei',sans-serif;text-align:center;line-height:1.8">
+      <div><strong style="font-size:22px">今晚的雪需要一点点 JavaScript。</strong><br />请在浏览器中开启 JavaScript，再回来拆礼物。</div>
+    </div>
+  </noscript>
+
+  <!-- shared icons / illustrations -->
+  <svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 10.8 12 3.6l8.5 7.2v8.1a1.6 1.6 0 0 1-1.6 1.6H5.1a1.6 1.6 0 0 1-1.6-1.6z"/><path d="M9.2 20.5v-6.2h5.6v6.2"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3.4" y="9.1" width="17.2" height="11.3" rx="2"/><path d="M2.5 9.1h19v4.2h-19zM12 9.1v11.3"/><path d="M12 9.1C9.4 9.1 7.1 8 7.1 5.9c0-1.5 1.2-2.4 2.5-2.4 1.8 0 2.4 2.3 2.4 5.6Zm0 0c2.6 0 4.9-1.1 4.9-3.2 0-1.5-1.2-2.4-2.5-2.4-1.8 0-2.4 2.3-2.4 5.6Z"/></symbol>
+    <symbol id="i-tree" viewBox="0 0 24 24"><path d="M12 2.8 18 11h-3.3l4.1 5.8H5.2L9.3 11H6z"/><path d="M12 16.8v4.4M9 21.2h6"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.3 5.9a5.1 5.1 0 0 0-7.2 0L12 7l-1.1-1.1a5.1 5.1 0 1 0-7.2 7.2L12 21l8.3-7.9a5.1 5.1 0 0 0 0-7.2Z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2.8 2.7 6.5 7 .6-5.3 4.6 1.6 6.9-6-3.6-6 3.6 1.6-6.9-5.3-4.6 7-.6z"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9.3h3.5L12 5.4v13.2L7.5 14.7H4z"/><path d="M16 9a4.2 4.2 0 0 1 0 6M18.7 6.4a8 8 0 0 1 0 11.2"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9.3h3.5L12 5.4v13.2L7.5 14.7H4z"/><path d="m16 9 5 5m0-5-5 5"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.2" y="8.2" width="11.6" height="11.6" rx="2"/><path d="M15.8 8.2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7.8a2 2 0 0 0 2 2h2.2"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h14M13 6.2l5.8 5.8-5.8 5.8"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2.5c.7 5.6 3.9 8.8 9.5 9.5-5.6.7-8.8 3.9-9.5 9.5-.7-5.6-3.9-8.8-9.5-9.5 5.6-.7 8.8-3.9 9.5-9.5Z"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="m8.4 10.8 7.2-4M8.4 13.2l7.2 4"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m5 5 14 14M19 5 5 19"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4.5 12.5 5 5 10-11"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.1 6.4M20 4.8V11h-6.2"/></symbol>
+    <symbol id="i-paw" viewBox="0 0 24 24"><ellipse cx="7" cy="8" rx="2" ry="2.7"/><ellipse cx="12" cy="6" rx="2" ry="2.7"/><ellipse cx="17" cy="8" rx="2" ry="2.7"/><path d="M12 11c-3 0-5.6 2-5.6 4.6 0 2 1.4 3.4 3.2 3.4 1 0 1.6-.4 2.4-.4s1.4.4 2.4.4c1.8 0 3.2-1.4 3.2-3.4C17.6 13 15 11 12 11Z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.8" y="5" width="18.4" height="14" rx="2.4"/><path d="m3.4 6.2 8.6 7 8.6-7"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 2v20M3.3 7l17.4 10M20.7 7 3.3 17M8.4 4.1 12 7.7l3.6-3.6M8.4 19.9 12 16.3l3.6 3.6M3.1 10.2 8 11.6l-.7 4.9M20.9 10.2 16 11.6l.7 4.9"/></symbol>
+
+    <symbol id="santa-fly" viewBox="0 0 280 210">
+      <g>
+        <path d="M7 119c37 18 63-4 90 10" fill="none" stroke="#ffe6a6" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 12" opacity=".75"/>
+        <path d="M8 101c30 12 48-8 75 2" fill="none" stroke="#fff4c8" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="1 10" opacity=".45"/>
+        <g transform="translate(142 83) rotate(-4)">
+          <path d="M18 42c-4-30 21-47 48-36 9 4 13 12 13 24l-9 36c-10 13-39 12-48-3z" fill="#c58a50" stroke="#2b2233" stroke-width="4"/>
+          <path d="M35 19c12 8 29 9 42 2" fill="none" stroke="#e9bb83" stroke-width="4" stroke-linecap="round"/>
+          <path d="M40 13c1-12 12-14 18-5" fill="none" stroke="#2b2233" stroke-width="3" stroke-linecap="round"/>
+        </g>
+        <path d="M73 153c12-19 41-23 77-21 42 3 76 9 98 26l-12 27c-36 10-93 10-145-2z" fill="#d9383f" stroke="#2b2233" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M78 151c22-8 59-11 88-7 31 4 56 12 68 21" fill="none" stroke="#ffd9a0" stroke-width="5" stroke-linecap="round"/>
+        <path d="M63 177c63 17 129 16 196 1" fill="none" stroke="#ffcf55" stroke-width="7" stroke-linecap="round"/>
+        <path d="M66 177c-7 11-2 18 8 15l9-4M256 178c6 11 1 18-9 15l-8-4" fill="none" stroke="#ffcf55" stroke-width="6" stroke-linecap="round"/>
+        <path d="M152 156c-2-26 7-44 24-48 19-4 31 12 29 39" fill="#e8423f" stroke="#2b2233" stroke-width="4"/>
+        <path d="M162 114c2-22 17-33 34-26 13 6 15 20 11 35l-9 22-33-7z" fill="#ffd7b5" stroke="#2b2233" stroke-width="4"/>
+        <path d="M160 100c15-10 38-11 51 1-4 17-18 23-36 20-13-3-20-10-15-21z" fill="#fff" stroke="#2b2233" stroke-width="3.6"/>
+        <circle cx="181" cy="105" r="2.7" fill="#2b2233"/>
+        <circle cx="199" cy="104" r="2.7" fill="#2b2233"/>
+        <circle cx="191" cy="113" r="4.5" fill="#ed8a81"/>
+        <path d="M158 92c8-20 27-31 45-20 7 4 11 9 12 16-13-8-23-8-34-2-8 4-15 5-23 6z" fill="#e8423f" stroke="#2b2233" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M154 93c13-5 31-8 53-1" fill="none" stroke="#fff6e9" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="147" cy="91" r="8" fill="#fff6e9" stroke="#2b2233" stroke-width="3.2"/>
+        <path d="M201 131c15 1 25 10 23 21" fill="none" stroke="#e8423f" stroke-width="10" stroke-linecap="round"/>
+        <circle cx="225" cy="153" r="8" fill="#ffd7b5" stroke="#2b2233" stroke-width="3.2"/>
+        <rect x="121" y="139" width="31" height="26" rx="5" fill="#7fd1ae" stroke="#2b2233" stroke-width="4" transform="rotate(-8 136 152)"/>
+        <path d="M132 143v19M121 151h30" stroke="#fff3cf" stroke-width="3" transform="rotate(-8 136 152)"/>
+        <path d="M235 61l3.3 8.7 8.7 3.3-8.7 3.3-3.3 8.7-3.3-8.7-8.7-3.3 8.7-3.3z" fill="#ffe6a6"/>
+        <circle cx="48" cy="76" r="2.4" fill="#ffe6a6"/>
+        <circle cx="92" cy="52" r="1.8" fill="#fff"/>
+        <circle cx="243" cy="128" r="2" fill="#fff"/>
+      </g>
+    </symbol>
+
+    <symbol id="santa-face" viewBox="0 0 120 120">
+      <circle cx="60" cy="62" r="38" fill="#ffd7b5" stroke="#2b2233" stroke-width="4"/>
+      <path d="M27 58c9-22 29-31 49-24 11 4 18 12 21 23-15-12-33-13-51-4-7 3-13 5-19 5z" fill="#fff" stroke="#2b2233" stroke-width="3.8"/>
+      <path d="M21 55c13-35 49-48 77-19 8 8 12 18 12 28-15-10-31-13-48-7-14 5-27 5-41-2z" fill="#e8423f" stroke="#2b2233" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M19 55c19-8 44-9 72 0" fill="none" stroke="#fff6e9" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="7" cy="56" r="8" fill="#fff6e9" stroke="#2b2233" stroke-width="3.2"/>
+      <circle cx="47" cy="59" r="3" fill="#2b2233"/><circle cx="73" cy="59" r="3" fill="#2b2233"/>
+      <circle cx="60" cy="71" r="5" fill="#ed8a81"/>
+      <path d="M44 80c6 15 26 15 32 0-5 4-10 5-16 5s-11-1-16-5z" fill="#fff" stroke="#2b2233" stroke-width="2.4"/>
+    </symbol>
+  </svg>
+
+  <div class="sky" aria-hidden="true">
+    <div class="aurora aurora-a"></div>
+    <div class="aurora aurora-b"></div>
+    <div class="aurora aurora-c"></div>
+    <div class="sky-glow"></div>
+  </div>
+  <canvas id="snowfall" aria-hidden="true"></canvas>
+
+  <div id="app" class="app" hidden>
+    <header class="site-header">
+      <button class="brand" type="button" data-route="home" aria-label="回到首页">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 44 44"><path class="brand-star" d="M22 4.5 26.5 16l11.5 4.5L26.5 25 22 36.5 17.5 25 6 20.5 17.5 16z"/><circle cx="22" cy="20.8" r="5.2"/></svg>
+        </span>
+        <span class="brand-type">
+          <span class="brand-eyebrow">MERRY &amp; BRIGHT</span>
+          <span class="brand-name">圣诞礼物交换所</span>
+        </span>
+      </button>
+
+      <nav class="main-nav" aria-label="主导航">
+        <button class="nav-link is-active" type="button" data-route="home"><svg><use href="#i-home"/></svg><span>首页</span></button>
+        <button class="nav-link" type="button" data-route="gifts"><svg><use href="#i-gift"/></svg><span>礼物工坊</span></button>
+        <button class="nav-link" type="button" data-route="tree"><svg><use href="#i-tree"/></svg><span>动物圣诞树</span></button>
+        <button class="nav-link" type="button" data-route="quiz"><svg><use href="#i-heart"/></svg><span>默契测试</span></button>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-btn sound-btn" id="soundToggle" type="button" aria-label="关闭声音" aria-pressed="true" title="声音">
+          <svg class="sound-on"><use href="#i-sound"/></svg>
+          <svg class="sound-off"><use href="#i-mute"/></svg>
+        </button>
+        <button class="profile-chip" id="profileChip" type="button" aria-label="查看我的小动物">
+          <span class="profile-emoji" id="profileEmoji">🦊</span>
+          <span class="profile-meta"><small>我的动物</small><strong id="profileName">小满</strong></span>
+          <span class="profile-dot" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ============================== HOME ============================== -->
+      <section class="view view-home is-active" data-view="home" aria-labelledby="homeTitle">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="eyebrow-dot"></span>2026 · CHRISTMAS GIFT EXCHANGE</div>
+            <h1 id="homeTitle">把一份礼物，<br /><span class="script-word">挂进</span>这个圣诞夜。</h1>
+            <p class="hero-lead">领一只只属于你的小动物，挂上今晚的圣诞树；写一封匿名或署名的贺卡，让圣诞老人替你送达。最后，和 TA 对一对心照不宣的圣诞暗号。</p>
+            <div class="hero-cta">
+              <button class="btn btn-primary" type="button" data-route="gifts">
+                <span>开始交换礼物</span>
+                <svg><use href="#i-arrow"/></svg>
+              </button>
+              <button class="btn btn-ghost" type="button" data-route="tree">
+                <svg><use href="#i-tree"/></svg>
+                <span>看看我的树</span>
+              </button>
+            </div>
+            <div class="hero-stats" aria-label="圣诞夜数据">
+              <div class="stat"><strong id="statAnimals">0</strong><span>只小动物上树</span></div>
+              <div class="stat-divider"></div>
+              <div class="stat"><strong id="statGifts">0</strong><span>份礼物已送达</span></div>
+              <div class="stat-divider"></div>
+              <div class="stat"><strong id="statMatch">--</strong><span>最高默契值</span></div>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-scene">
+              <div class="scene-window">
+                <svg class="scene-svg" viewBox="0 0 540 610" role="img" aria-label="雪夜里的圣诞树、小动物挂饰和乘雪橇的圣诞老人">
+                  <defs>
+                    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2b58"/><stop offset=".55" stop-color="#2c477e"/><stop offset="1" stop-color="#6f7fb0"/></linearGradient>
+                    <radialGradient id="moonGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff8d8" stop-opacity=".9"/><stop offset=".4" stop-color="#ffe6a6" stop-opacity=".35"/><stop offset="1" stop-color="#ffe6a6" stop-opacity="0"/></radialGradient>
+                    <linearGradient id="treeGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3d9670"/><stop offset=".55" stop-color="#257254"/><stop offset="1" stop-color="#174c3e"/></linearGradient>
+                    <linearGradient id="hillGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef4ff"/><stop offset="1" stop-color="#b9c8e8"/></linearGradient>
+                    <linearGradient id="giftGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f25f5c"/><stop offset="1" stop-color="#b82838"/></linearGradient>
+                    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    <clipPath id="sceneClip"><rect width="540" height="610" rx="26"/></clipPath>
+                  </defs>
+                  <g clip-path="url(#sceneClip)">
+                    <rect width="540" height="610" fill="url(#skyGrad)"/>
+                    <circle cx="405" cy="108" r="110" fill="url(#moonGlow)"/>
+                    <circle cx="405" cy="108" r="55" fill="#fff4cd"/>
+                    <circle cx="389" cy="93" r="9" fill="#f2dfae" opacity=".7"/>
+                    <circle cx="423" cy="124" r="6" fill="#f2dfae" opacity=".55"/>
+                    <g fill="#fff" opacity=".8">
+                      <circle cx="72" cy="78" r="2.2"/><circle cx="131" cy="42" r="1.4"/><circle cx="206" cy="92" r="1.8"/><circle cx="298" cy="55" r="2"/><circle cx="479" cy="62" r="1.6"/>
+                      <circle cx="58" cy="180" r="1.4"/><circle cx="172" cy="148" r="2.1"/><circle cx="333" cy="158" r="1.4"/><circle cx="486" cy="190" r="2.2"/><circle cx="258" cy="116" r="1.2"/>
+                    </g>
+                    <path d="M-20 440c88-42 162-50 243-17 79 32 162 34 337-23v210H-20z" fill="#e8f0ff" opacity=".22"/>
+                    <path d="M-40 512c101-54 187-57 277-15 87 41 180 32 343-28v141H-40z" fill="url(#hillGrad)"/>
+                    <path d="M-30 548c121-33 191-19 274 8 117 39 200 11 326-19v73H-30z" fill="#fff" opacity=".85"/>
+                    <g transform="translate(96 190)">
+                      <rect x="137" y="333" width="38" height="64" rx="9" fill="#7a4a32" stroke="#202b3a" stroke-width="5"/>
+                      <path d="M156 28 252 205H60z" fill="url(#treeGrad)" stroke="#153b34" stroke-width="7" stroke-linejoin="round"/>
+                      <path d="M156 132 289 328H23z" fill="url(#treeGrad)" stroke="#153b34" stroke-width="7" stroke-linejoin="round"/>
+                      <path d="M156 239 321 410H-9z" fill="url(#treeGrad)" stroke="#153b34" stroke-width="7" stroke-linejoin="round"/>
+                      <path d="M89 205c20-13 53-17 91-8 23 5 49 12 73 24" fill="none" stroke="#f6fbff" stroke-width="8" stroke-linecap="round" opacity=".9"/>
+                      <path d="M48 328c29-14 67-16 105-8 36 8 76 9 123 0" fill="none" stroke="#f6fbff" stroke-width="8" stroke-linecap="round" opacity=".9"/>
+                      <path d="M11 409c40-16 77-18 131-9 47 8 96 4 156-8" fill="none" stroke="#f6fbff" stroke-width="9" stroke-linecap="round" opacity=".92"/>
+                      <path d="M156 28l6-26 7 26" fill="none" stroke="#ffd34d" stroke-width="4"/>
+                      <path d="M156 -4 160 5l10 4-10 3-4 10-4-10-10-3 10-4z" fill="#ffd34d" filter="url(#glow)"/>
+                      <path d="M97 180c25 20 39 44 47 77M214 174c-16 31-24 58-24 93M69 303c35 23 58 53 74 86M253 295c-24 29-40 56-51 94M31 382c42 9 77 27 105 50M286 375c-24 17-48 40-64 65" fill="none" stroke="#1c4d3f" stroke-width="2" opacity=".65"/>
+                      <g fill="#ffd34d" filter="url(#glow)">
+                        <circle cx="119" cy="214" r="4.5"/><circle cx="193" cy="245" r="4"/><circle cx="146" cy="278" r="3.6"/><circle cx="92" cy="338" r="4.5"/><circle cx="218" cy="326" r="4"/><circle cx="151" cy="355" r="3.6"/><circle cx="56" cy="398" r="4.5"/><circle cx="110" cy="432" r="4"/><circle cx="219" cy="422" r="4.4"/><circle cx="266" cy="390" r="3.6"/>
+                      </g>
+                      <g fill="#f26b6b" filter="url(#glow)"><circle cx="158" cy="196" r="4"/><circle cx="214" cy="286" r="4"/><circle cx="82" cy="370" r="4"/><circle cx="180" cy="406" r="4"/></g>
+                      <g fill="#89e0c0" filter="url(#glow)"><circle cx="102" cy="245" r="3.4"/><circle cx="177" cy="312" r="3.6"/><circle cx="247" cy="360" r="3.4"/><circle cx="132" cy="393" r="3.4"/></g>
+                    </g>
+                    <g transform="translate(330 457)">
+                      <rect x="0" y="26" width="100" height="84" rx="10" fill="url(#giftGrad)" stroke="#202b3a" stroke-width="5"/>
+                      <path d="M45 26v84M0 60h100" stroke="#ffe6a6" stroke-width="10"/>
+                      <path d="M44 26c-19-3-32-23-17-33 10-6 18 8 17 33zm12 0c18-3 31-23 17-33-10-6-18 8-17 33z" fill="#ffe6a6" stroke="#202b3a" stroke-width="4"/>
+                    </g>
+                    <g transform="translate(442 512)">
+                      <rect width="63" height="53" rx="8" fill="#7fd1ae" stroke="#202b3a" stroke-width="4"/>
+                      <path d="M31 0v53M0 23h63" stroke="#fff4d2" stroke-width="7"/>
+                      <path d="M31 0C21-2 14-12 21-16c6-4 10 4 10 16zm0 0c10-2 17-12 10-16-6-4-10 4-10 16z" fill="#fff4d2"/>
+                    </g>
+                    <g fill="#fff" opacity=".75">
+                      <circle cx="54" cy="252" r="2.3"/><circle cx="98" cy="313" r="1.6"/><circle cx="237" cy="213" r="2"/><circle cx="391" cy="303" r="1.8"/><circle cx="463" cy="264" r="2.2"/><circle cx="322" cy="354" r="1.5"/><circle cx="500" cy="398" r="1.8"/><circle cx="43" cy="460" r="2"/>
+                    </g>
+                  </g>
+                </svg>
+                <div class="scene-animals" id="heroAnimals" aria-hidden="true">
+                  <span class="scene-animal" style="--x:31%;--y:53%;--delay:-.8s"><span>🦌</span><i>小雪</i></span>
+                  <span class="scene-animal" style="--x:47%;--y:68%;--delay:-2.1s"><span>🐧</span><i>Momo</i></span>
+                  <span class="scene-animal" style="--x:62%;--y:58%;--delay:-1.4s"><span>🐰</span><i>阿团</i></span>
+                </div>
+                <div class="scene-santa">
+                  <svg viewBox="0 0 280 210" aria-hidden="true"><use href="#santa-fly"/></svg>
+                </div>
+                <div class="scene-snow" aria-hidden="true"></div>
+                <div class="scene-sticker">SANTA<br />IS COMING<span>✦</span></div>
+              </div>
+              <div class="hero-tag tag-one"><span class="tag-dot"></span>今晚 21:00 · 圣诞老人出发</div>
+              <div class="hero-tag tag-two"><svg><use href="#i-sparkle"/></svg>每只小动物只出现一次</div>
+              <div class="countdown-card" aria-label="距离圣诞夜倒计时">
+                <div class="countdown-head"><span>距离圣诞夜</span><span class="live-pill"><i></i>LIVE</span></div>
+                <div class="countdown-clock" id="countdown">
+                  <div><strong data-cd="days">00</strong><span>天</span></div><b>:</b>
+                  <div><strong data-cd="hours">00</strong><span>时</span></div><b>:</b>
+                  <div><strong data-cd="minutes">00</strong><span>分</span></div><b>:</b>
+                  <div><strong data-cd="seconds">00</strong><span>秒</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ticker" aria-hidden="true">
+          <div class="ticker-track">
+            <span>匿名贺卡</span><i>✦</i><span>独一无二的小动物</span><i>✧</i><span>圣诞老人速递</span><i>✦</i><span>默契度测试</span><i>✧</i><span>雪球愿望</span><i>✦</i><span>热可可无限续杯</span><i>✧</i>
+            <span>匿名贺卡</span><i>✦</i><span>独一无二的小动物</span><i>✧</i><span>圣诞老人速递</span><i>✦</i><span>默契度测试</span><i>✧</i><span>雪球愿望</span><i>✦</i><span>热可可无限续杯</span><i>✧</i>
+          </div>
+        </div>
+
+        <section class="feature-section" aria-labelledby="featureTitle">
+          <div class="section-head">
+            <div>
+              <span class="kicker">TONIGHT'S LITTLE RITUALS</span>
+              <h2 id="featureTitle">三件小事，<em>把圣诞夜点亮。</em></h2>
+            </div>
+            <p>像拆开一份被仔细包好的礼物那样，慢慢来。每一件小事都会留在这台设备里，等你回来。</p>
+          </div>
+          <div class="feature-grid">
+            <article class="feature-card feature-gift">
+              <div class="feature-top"><span class="feature-num">01</span><span class="feature-icon"><svg><use href="#i-gift"/></svg></span></div>
+              <div class="feature-copy">
+                <h3>礼物工坊</h3>
+                <p>选一张贺卡，写下只给 TA 的话。匿名还是署名，由你决定。圣诞老人会替你送到。</p>
+                <button class="text-link" type="button" data-route="gifts">去写一张贺卡 <svg><use href="#i-arrow"/></svg></button>
+              </div>
+              <div class="feature-art" aria-hidden="true">
+                <span class="art-envelope"><i></i><b>♡</b></span>
+                <span class="art-stamp">DEC<br />25</span>
+                <span class="art-star">✦</span>
+              </div>
+            </article>
+
+            <article class="feature-card feature-tree">
+              <div class="feature-top"><span class="feature-num">02</span><span class="feature-icon"><svg><use href="#i-tree"/></svg></span></div>
+              <div class="feature-copy">
+                <h3>动物圣诞树</h3>
+                <p>每个进入圣诞夜的人，都会领到一只不能重复的小动物。把它挂在树梢上，就是今晚的星星。</p>
+                <button class="text-link" type="button" data-route="tree">去挂上我的动物 <svg><use href="#i-arrow"/></svg></button>
+              </div>
+              <div class="feature-art" aria-hidden="true">
+                <span class="art-bauble a">🦊</span><span class="art-bauble b">🐧</span><span class="art-bauble c">🐻</span>
+                <span class="art-pine"></span>
+              </div>
+            </article>
+
+            <article class="feature-card feature-quiz">
+              <div class="feature-top"><span class="feature-num">03</span><span class="feature-icon"><svg><use href="#i-heart"/></svg></span></div>
+              <div class="feature-copy">
+                <h3>默契度测试</h3>
+                <p>六道关于圣诞的小题。先写下你的答案，再让 TA 来猜。看看你们的心是不是同频。</p>
+                <button class="text-link" type="button" data-route="quiz">看看我们的默契 <svg><use href="#i-arrow"/></svg></button>
+              </div>
+              <div class="feature-art" aria-hidden="true">
+                <span class="art-heart">♥</span><span class="art-ring"></span><span class="art-percent">83<small>%</small></span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="wish-section" id="wishes" aria-labelledby="wishTitle">
+          <div class="wish-copy">
+            <span class="kicker">04 / WISH SNOWGLOBE</span>
+            <h2 id="wishTitle">把愿望，<br /><em>摇进雪球里。</em></h2>
+            <p>写下一个小小的圣诞愿望吧。它会被收进这颗雪球里，和所有陌生人的愿望一起，慢慢下雪。</p>
+            <form class="wish-form" id="wishForm">
+              <label class="sr-only" for="wishInput">写下你的圣诞愿望</label>
+              <input id="wishInput" name="wish" maxlength="48" placeholder="比如：想和喜欢的人一起看一场雪" autocomplete="off" required />
+              <button class="btn btn-primary btn-small" type="submit"><span>放进雪球</span><svg><use href="#i-plus"/></svg></button>
+            </form>
+            <div class="wish-list" id="wishList"></div>
+          </div>
+          <div class="snowglobe" aria-hidden="true">
+            <div class="globe-halo"></div>
+            <div class="globe">
+              <div class="globe-sky"></div>
+              <div class="globe-moon"></div>
+              <div class="globe-snow"></div>
+              <div class="globe-tree"><i></i><i></i><i></i><b>★</b></div>
+              <div class="globe-gift"></div>
+              <div class="globe-santa">
+                <svg viewBox="0 0 120 120"><use href="#santa-face"/></svg>
+              </div>
+              <span class="globe-spark s1">✦</span><span class="globe-spark s2">✧</span><span class="globe-spark s3">✦</span>
+            </div>
+            <div class="globe-base"><span>MERRY CHRISTMAS</span><i></i></div>
+            <div class="globe-shadow"></div>
+            <div class="globe-note">shake gently<br /><b>for a little magic</b></div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================== GIFTS ============================== -->
+      <section class="view view-gifts" data-view="gifts" aria-labelledby="giftsTitle">
+        <div class="page-head">
+          <div class="page-head-copy">
+            <span class="kicker">01 / GIFT ATELIER</span>
+            <h1 id="giftsTitle">写一张贺卡，<br /><em>让圣诞老人替你送达。</em></h1>
+            <p>不必很贵的礼物。一句刚刚好的话、一张被认真挑过的卡片，就足够让今晚变得不一样。</p>
+          </div>
+          <div class="page-head-stamp" aria-hidden="true">
+            <span>POST</span><b>DEC 25</b><i>NORTH POLE</i>
+          </div>
+        </div>
+
+        <div class="gift-layout">
+          <form class="gift-form cream-panel" id="giftForm">
+            <div class="panel-topline">
+              <span class="kicker dark">YOUR CHRISTMAS CARD</span>
+              <span class="form-step">01 / 02</span>
+            </div>
+
+            <div class="field">
+              <span class="field-label">这张贺卡，你想怎么署名？</span>
+              <div class="segmented" role="group" aria-label="署名方式">
+                <button type="button" class="seg-btn is-active" data-anon="true" aria-pressed="true"><svg><use href="#i-mail"/></svg><span>匿名送出</span><small>保留一点神秘</small></button>
+                <button type="button" class="seg-btn" data-anon="false" aria-pressed="false"><svg><use href="#i-star"/></svg><span>署名送出</span><small>让 TA 知道是我</small></button>
+              </div>
+              <input type="hidden" id="giftAnon" value="true" />
+            </div>
+
+            <div class="field-row">
+              <label class="field"><span class="field-label">写给谁</span><input id="giftTo" maxlength="12" placeholder="TA 的名字" autocomplete="off" required /></label>
+              <label class="field" id="signatureField" hidden><span class="field-label">署名</span><input id="giftFrom" maxlength="12" placeholder="你的名字" autocomplete="off" /></label>
+            </div>
+
+            <label class="field">
+              <span class="field-label">贺卡上的话 <span class="field-note">最多 80 字</span></span>
+              <textarea id="giftMessage" maxlength="80" rows="3" placeholder="愿你的圣诞袜里，装满热可可、好天气和一点点偏心。"></textarea>
+              <span class="char-count"><b id="giftChar">0</b>/80</span>
+            </label>
+
+            <div class="field">
+              <span class="field-label">随贺卡附上一份小礼物</span>
+              <div class="gift-type-grid" id="giftTypes" role="group" aria-label="礼物类型"></div>
+            </div>
+
+            <div class="form-bottom">
+              <div class="field theme-field">
+                <span class="field-label">卡片款式</span>
+                <div class="theme-picker" id="themePicker" role="group" aria-label="卡片款式">
+                  <button class="theme-swatch is-active" type="button" data-theme="velvet" aria-label="红丝绒" aria-pressed="true"><i></i></button>
+                  <button class="theme-swatch" type="button" data-theme="midnight" aria-label="雪夜蓝" aria-pressed="false"><i></i></button>
+                  <button class="theme-swatch" type="button" data-theme="ginger" aria-label="姜饼暖" aria-pressed="false"><i></i></button>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-send" type="submit" id="sendGiftBtn">
+                <span>交给圣诞老人</span>
+                <svg><use href="#i-arrow"/></svg>
+              </button>
+            </div>
+            <p class="form-hint"><svg><use href="#i-sparkle"/></svg>礼物会保存在这台设备里，也可以生成链接分享给 TA。</p>
+          </form>
+
+          <aside class="gift-stage" aria-label="圣诞老人送信现场">
+            <div class="stage-topline"><span>SANTA'S DELIVERY LINE</span><span class="live-pill"><i></i>IN FLIGHT</span></div>
+            <div class="stage-sky" aria-hidden="true">
+              <span class="stage-star a">✦</span><span class="stage-star b">✧</span><span class="stage-star c">✦</span><span class="stage-star d">·</span>
+              <span class="stage-moon"></span>
+              <div class="stage-santa"><svg viewBox="0 0 280 210"><use href="#santa-fly"/></svg></div>
+              <div class="stage-hill h1"></div><div class="stage-hill h2"></div>
+              <div class="stage-pines"><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="stage-mailbox"><span></span><i></i></div>
+              <div class="stage-caption">「今晚的雪，刚好适合送一封信。」</div>
+            </div>
+            <div class="preview-wrap">
+              <div class="preview-label"><span>YOUR CARD PREVIEW</span><span>↘</span></div>
+              <div class="mini-card theme-velvet" id="giftPreview">
+                <div class="mini-card-top"><span class="mini-card-to">TO: 某个重要的人</span><span class="mini-card-seal">✦</span></div>
+                <div class="mini-card-body">
+                  <span class="mini-gift">☕</span>
+                  <p class="mini-msg">愿你的圣诞袜里，装满热可可、好天气和一点点偏心。</p>
+                  <div class="mini-card-bottom"><span class="mini-from">— 一位神秘的朋友</span><span class="mini-date">25.12</span></div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <section class="gift-wall-section" aria-labelledby="wallTitle">
+          <div class="section-head wall-head">
+            <div>
+              <span class="kicker">DELIVERED TONIGHT</span>
+              <h2 id="wallTitle">礼物都到啦，<em>拆开看看。</em></h2>
+            </div>
+            <div class="wall-tools">
+              <span class="wall-count" id="giftCount">0 份已送达</span>
+              <button class="icon-btn border-btn" id="refreshGifts" type="button" aria-label="随机展开一份礼物" title="随机拆一份"><svg><use href="#i-sparkle"/></svg></button>
+            </div>
+          </div>
+          <div class="gift-wall" id="giftWall"></div>
+          <p class="wall-footnote" id="giftEmpty" hidden>还没有礼物。写一张贺卡，第一份礼物就会出现在这里。</p>
+        </section>
+      </section>
+
+      <!-- ============================== TREE ============================== -->
+      <section class="view view-tree" data-view="tree" aria-labelledby="treeTitle">
+        <div class="page-head">
+          <div class="page-head-copy">
+            <span class="kicker">02 / ANIMAL CHRISTMAS TREE</span>
+            <h1 id="treeTitle">每只小动物，<br /><em>都是今晚的一颗星。</em></h1>
+            <p>你领到的小动物已经拥有自己的位置。也可以帮来访的朋友挑一只，把它挂在树上。记住：同一只小动物，只会出现一次。</p>
+          </div>
+          <div class="page-head-stamp stamp-tree" aria-hidden="true"><span>ON TREE</span><b id="treeStampCount">01</b><i>UNIQUE ANIMALS</i></div>
+        </div>
+
+        <div class="tree-layout">
+          <div class="tree-stage is-lit" id="treeStage">
+            <div class="tree-stage-top">
+              <span><svg><use href="#i-paw"/></svg>今晚的动物名单</span>
+              <div class="tree-stage-actions">
+                <button class="stage-chip" id="shakeTree" type="button"><svg><use href="#i-sparkle"/></svg>摇一摇</button>
+                <button class="stage-chip is-lit" id="lightTree" type="button" aria-pressed="true"><i></i>关灯</button>
+              </div>
+            </div>
+            <div class="tree-sky" aria-hidden="true">
+              <span class="tree-star s1">✦</span><span class="tree-star s2">✧</span><span class="tree-star s3">✦</span><span class="tree-moon"></span>
+              <div class="tree-glow"></div>
+            </div>
+            <div class="tree-canvas" id="treeCanvas">
+              <svg class="tree-svg" viewBox="0 0 600 760" role="img" aria-label="挂满小动物挂饰的圣诞树">
+                <defs>
+                  <linearGradient id="bigTreeGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f8a65"/><stop offset=".55" stop-color="#1f6b50"/><stop offset="1" stop-color="#104b3c"/></linearGradient>
+                  <linearGradient id="bigTreeLight" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5bb88c"/><stop offset="1" stop-color="#2c7a5b"/></linearGradient>
+                  <linearGradient id="potGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6d5a6"/><stop offset="1" stop-color="#c78f5d"/></linearGradient>
+                  <radialGradient id="starGlow"><stop offset="0" stop-color="#fff6c9"/><stop offset=".45" stop-color="#ffd34d" stop-opacity=".8"/><stop offset="1" stop-color="#ffd34d" stop-opacity="0"/></radialGradient>
+                  <filter id="treeGlow"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                  <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#071325" flood-opacity=".45"/></filter>
+                </defs>
+                <ellipse cx="300" cy="712" rx="230" ry="34" fill="#081326" opacity=".45"/>
+                <g filter="url(#softShadow)">
+                  <rect x="270" y="636" width="60" height="72" rx="12" fill="#7a4a32" stroke="#0d2a24" stroke-width="6"/>
+                  <path d="M155 676h290l-30 74H185z" fill="url(#potGrad)" stroke="#0d2a24" stroke-width="6"/>
+                  <path d="M155 676h290" stroke="#fff2d3" stroke-width="7" stroke-linecap="round" opacity=".8"/>
+                  <path d="M300 52 446 322H154z" fill="url(#bigTreeGrad)" stroke="#0c3a30" stroke-width="8" stroke-linejoin="round"/>
+                  <path d="M300 200 505 500H95z" fill="url(#bigTreeGrad)" stroke="#0c3a30" stroke-width="8" stroke-linejoin="round"/>
+                  <path d="M300 350 562 668H38z" fill="url(#bigTreeGrad)" stroke="#0c3a30" stroke-width="8" stroke-linejoin="round"/>
+                  <path d="M300 52 446 322H154z" fill="url(#bigTreeLight)" opacity=".28"/>
+                  <path d="M208 243c54-21 130-24 186-5 15 6 30 13 47 23" fill="none" stroke="#eef8ff" stroke-width="12" stroke-linecap="round" opacity=".94"/>
+                  <path d="M148 427c75-25 190-28 304-4 19 4 35 9 51 15" fill="none" stroke="#eef8ff" stroke-width="12" stroke-linecap="round" opacity=".94"/>
+                  <path d="M79 603c99-30 260-35 445-3 18 3 32 7 44 11" fill="none" stroke="#eef8ff" stroke-width="13" stroke-linecap="round" opacity=".94"/>
+                  <g class="tree-wire" fill="none" stroke="#0d3b30" stroke-width="3" opacity=".75">
+                    <path d="M190 166c55 32 159 39 235 9M147 302c78 42 223 45 313 6M103 470c107 55 290 62 395 9M63 626c150 61 340 63 478 12"/>
+                  </g>
+                  <g class="tree-bulbs">
+                    <circle cx="206" cy="196" r="9" fill="#ffd34d"/><circle cx="271" cy="214" r="8" fill="#f26b6b"/><circle cx="340" cy="219" r="9" fill="#7fd1ae"/><circle cx="405" cy="203" r="8" fill="#ffd34d"/>
+                    <circle cx="171" cy="345" r="9" fill="#f26b6b"/><circle cx="244" cy="363" r="8" fill="#7fd1ae"/><circle cx="322" cy="369" r="9" fill="#ffd34d"/><circle cx="403" cy="359" r="8" fill="#f26b6b"/><circle cx="476" cy="341" r="9" fill="#7fd1ae"/>
+                    <circle cx="131" cy="516" r="9" fill="#7fd1ae"/><circle cx="216" cy="536" r="8" fill="#ffd34d"/><circle cx="305" cy="546" r="9" fill="#f26b6b"/><circle cx="400" cy="539" r="8" fill="#ffd34d"/><circle cx="482" cy="519" r="9" fill="#7fd1ae"/>
+                    <circle cx="101" cy="653" r="9" fill="#ffd34d"/><circle cx="192" cy="669" r="8" fill="#f26b6b"/><circle cx="286" cy="677" r="9" fill="#7fd1ae"/><circle cx="384" cy="672" r="8" fill="#ffd34d"/><circle cx="476" cy="655" r="9" fill="#f26b6b"/>
+                  </g>
+                  <path d="M300 52 300 10" stroke="#ffd34d" stroke-width="5" stroke-linecap="round"/>
+                  <circle cx="300" cy="20" r="75" fill="url(#starGlow)" class="tree-star-glow"/>
+                  <path class="tree-top-star" d="M300-22 316 9l36 9-36 10-16 34-16-34-36-10 36-9z" fill="#ffd34d" stroke="#b7791f" stroke-width="4" stroke-linejoin="round"/>
+                </g>
+                <g class="tree-gift-boxes">
+                  <g transform="translate(120 610) rotate(-7)"><rect width="84" height="72" rx="9" fill="#e8423f" stroke="#0d2a24" stroke-width="5"/><path d="M40 0v72M0 30h84" stroke="#ffe9b0" stroke-width="9"/><path d="M40 0C26-1 17-15 27-21c8-5 13 6 13 21zm7 0c14-1 23-15 13-21-8-5-13 6-13 21z" fill="#ffe9b0"/></g>
+                  <g transform="translate(404 612) rotate(6)"><rect width="74" height="64" rx="9" fill="#7fd1ae" stroke="#0d2a24" stroke-width="5"/><path d="M35 0v64M0 27h74" stroke="#fff5d7" stroke-width="8"/><path d="M35 0C23-1 15-13 24-18c7-4 11 5 11 18zm6 0c12-1 20-13 11-18-7-4-11 5-11 18z" fill="#fff5d7"/></g>
+                  <g transform="translate(250 650) rotate(-3)"><rect width="60" height="52" rx="8" fill="#f0b45c" stroke="#0d2a24" stroke-width="4"/><path d="M27 0v52M0 22h60" stroke="#e8423f" stroke-width="7"/></g>
+                </g>
+              </svg>
+              <div class="tree-ornaments" id="treeOrnaments"></div>
+              <div class="tree-empty-note" id="treeEmptyNote" hidden>树上还空空的，去领一只小动物吧。</div>
+            </div>
+            <div class="tree-stage-foot">
+              <p><span class="pulse-dot"></span><strong id="treeFootCount">0</strong> 只小动物正在树上过圣诞</p>
+              <button class="text-link light" type="button" data-route="quiz">顺便测测默契 <svg><use href="#i-arrow"/></svg></button>
+            </div>
+          </div>
+
+          <aside class="tree-side">
+            <div class="side-card cream-panel my-animal-card">
+              <div class="side-card-head"><span class="kicker dark">YOUR LITTLE ONE</span><span class="mini-badge">UNIQUE</span></div>
+              <div class="my-animal" id="myAnimalCard">
+                <div class="my-animal-orb"><span id="myAnimalEmoji">🦊</span><i></i></div>
+                <div><strong id="myAnimalName">小狐狸</strong><p id="myAnimalVibe">鬼灵精，嘴硬心软</p></div>
+              </div>
+              <p class="side-note">它已经在树上了。每只小动物只能被领走一次，所以你们都是独一无二的。</p>
+            </div>
+
+            <div class="side-card cream-panel">
+              <div class="side-card-head"><span class="kicker dark">HANG A FRIEND</span><span class="mini-badge">GUEST</span></div>
+              <h3>帮一位访客上树</h3>
+              <p class="side-copy">写下 TA 的名字，再挑一只还没被领走的小动物。</p>
+              <form id="hangForm" class="hang-form">
+                <label class="field"><span class="field-label">访客昵称</span><input id="hangName" maxlength="10" placeholder="例如：冬冬" required /></label>
+                <div class="animal-tray" id="animalTray" role="group" aria-label="可领养的小动物"></div>
+                <div class="hang-foot">
+                  <span class="hang-hint" id="hangHint">挑一只小动物</span>
+                  <button class="btn btn-primary btn-small" type="submit" id="hangBtn"><span>挂上树</span><svg><use href="#i-tree"/></svg></button>
+                </div>
+              </form>
+            </div>
+
+            <div class="side-card night-card">
+              <span class="kicker">YOUR TREE IS A POSTCARD</span>
+              <h3>让朋友也来看看<br />你的圣诞树。</h3>
+              <p>把链接发给 TA，TA 的小动物也会在树上找到位置。所有内容都留在这台设备里。</p>
+              <button class="btn btn-light btn-small" type="button" data-share-tree><svg><use href="#i-share"/></svg><span>复制树的链接</span></button>
+            </div>
+
+            <div class="ornament-list-card">
+              <div class="ornament-list-head"><span>ON THE TREE</span><span id="ornamentListCount">0 / 14</span></div>
+              <div class="ornament-list" id="ornamentList"></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ============================== QUIZ ============================== -->
+      <section class="view view-quiz" data-view="quiz" aria-labelledby="quizTitle">
+        <div class="page-head quiz-page-head">
+          <div class="page-head-copy">
+            <span class="kicker">03 / CHRISTMAS CHEMISTRY</span>
+            <h1 id="quizTitle">我们是不是，<br /><em>同频的圣诞星？</em></h1>
+            <p>六道没有标准答案的小题。先让自己的答案住进圣诞袜，再让 TA 来猜。猜中的，不只是选项。</p>
+          </div>
+          <div class="page-head-stamp stamp-quiz" aria-hidden="true"><span>CHEMISTRY</span><b>?</b><i>TEST</i></div>
+        </div>
+
+        <div class="quiz-shell" id="quizShell"></div>
+
+        <div class="quiz-foot">
+          <span><svg><use href="#i-sparkle"/></svg>默契不是考试，是刚好有人愿意懂你。</span>
+          <span>ALL ANSWERS LIVE IN YOUR BROWSER</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand"><span class="brand-mark small" aria-hidden="true"><svg viewBox="0 0 44 44"><path class="brand-star" d="M22 4.5 26.5 16l11.5 4.5L26.5 25 22 36.5 17.5 25 6 20.5 17.5 16z"/><circle cx="22" cy="20.8" r="5.2"/></svg></span><span>MERRY &amp; BRIGHT<br /><small>圣诞礼物交换所</small></span></div>
+      <p>这是一个纯前端的小小圣诞宇宙。礼物、愿望和小动物，都只保存在你的浏览器里。</p>
+      <div class="footer-actions">
+        <button class="footer-link" type="button" id="motionToggle" aria-pressed="false"><svg><use href="#i-sparkle"/></svg><span>轻量动效：关</span></button>
+        <button class="footer-link" type="button" id="resetAll"><svg><use href="#i-refresh"/></svg>重新开始这段圣诞故事</button>
+        <span>MADE WITH 🎄 &amp; ☕</span>
+      </div>
+    </footer>
+
+    <nav class="bottom-nav" aria-label="移动端导航">
+      <button class="bottom-link is-active" type="button" data-route="home"><svg><use href="#i-home"/></svg><span>首页</span></button>
+      <button class="bottom-link" type="button" data-route="gifts"><svg><use href="#i-gift"/></svg><span>礼物</span></button>
+      <button class="bottom-link" type="button" data-route="tree"><svg><use href="#i-tree"/></svg><span>圣诞树</span></button>
+      <button class="bottom-link" type="button" data-route="quiz"><svg><use href="#i-heart"/></svg><span>默契</span></button>
+    </nav>
+  </div>
+
+  <!-- onboarding -->
+  <div class="onboarding" id="onboarding" role="dialog" aria-modal="true" aria-labelledby="onboardTitle" hidden>
+    <div class="onboarding-backdrop"></div>
+    <div class="onboarding-card">
+      <div class="onboard-art">
+        <div class="onboard-window">
+          <div class="onboard-moon"></div>
+          <div class="onboard-hill h1"></div><div class="onboard-hill h2"></div>
+          <div class="onboard-tree"><i></i><i></i><i></i><b>★</b></div>
+          <div class="onboard-santa"><svg viewBox="0 0 280 210"><use href="#santa-fly"/></svg></div>
+          <div class="onboard-snow"></div>
+          <div class="onboard-preview" id="onboardPreview"><span>🦊</span><i>你的小动物</i></div>
+        </div>
+        <div class="onboard-art-copy">
+          <span class="kicker">WELCOME TO THE CLUB</span>
+          <p>「每只小动物只会出现一次。」</p>
+        </div>
+      </div>
+      <div class="onboard-body">
+        <div class="onboard-head">
+          <span class="kicker">BEFORE WE BEGIN</span>
+          <span class="onboard-step">STEP 1 / 1</span>
+        </div>
+        <h2 id="onboardTitle">先领一只<br /><em>属于你的圣诞小动物。</em></h2>
+        <p class="onboard-lead">它会是你在今晚的名字，也会被挂到圣诞树上。选好之后，就不能换成别人啦。</p>
+        <label class="field onboard-name-field"><span class="field-label">怎么称呼你？</span><input id="onboardName" maxlength="10" placeholder="例如：小满" autocomplete="off" /></label>
+        <div class="animal-picker-head"><span class="field-label">挑一只小动物</span><span id="animalClaimInfo">每只只能领一次</span></div>
+        <div class="animal-picker" id="animalPicker" role="group" aria-label="选择你的小动物"></div>
+        <div class="onboard-foot">
+          <div class="onboard-picked" id="onboardPicked"><span>还没有选择</span><small>挑一只喜欢的吧</small></div>
+          <button class="btn btn-primary" id="onboardSubmit" type="button" disabled><span>系上铃铛，进入圣诞夜</span><svg><use href="#i-arrow"/></svg></button>
+        </div>
+        <p class="onboard-note">你的选择会保存在本机浏览器，不需要登录，也不会被上传。</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastRoot" class="toast-root" aria-live="polite"></div>
+  <div id="modalRoot" class="modal-root" hidden></div>
+
+  <div class="santa-flight" id="santaFlight" aria-hidden="true">
+    <div class="flight-trail"><i></i><i></i><i></i><i></i><i></i></div>
+    <svg viewBox="0 0 280 210"><use href="#santa-fly"/></svg>
+    <div class="flight-gift">🎁</div>
+  </div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <script src="app.js"></script>
+</body>
+</html>
