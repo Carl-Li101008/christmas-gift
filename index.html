@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#101a33" />
-  <meta name="description" content="圣诞礼物交换所：领一只专属小动物，挂上圣诞树；写一封匿名或署名的贺卡，让圣诞老人替你送达；再和 TA 玩一场圣诞默契测试。" />
-  <meta property="og:title" content="圣诞礼物交换所 · 把一份礼物挂进圣诞夜" />
-  <meta property="og:description" content="领一只独一无二的小动物，写一封匿名或署名的圣诞贺卡，再和 TA 测一测默契。Merry & Bright。" />
+  <meta name="description" content="圣诞礼物交换所：先看看今晚的公共动物圣诞树，再领一只专属动物与装扮；送出贺卡后，你就会留在树上。" />
+  <meta property="og:title" content="圣诞礼物交换所 · 今晚谁在树上？" />
+  <meta property="og:description" content="一棵属于所有人的公共圣诞树。领一只专属动物与装扮，送出贺卡后留在树上。Merry & Bright。" />
   <meta property="og:type" content="website" />
   <title>圣诞礼物交换所 · Merry &amp; Bright</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -136,7 +136,7 @@
           <div class="hero-copy">
             <div class="eyebrow"><span class="eyebrow-dot"></span>2026 · CHRISTMAS GIFT EXCHANGE</div>
             <h1 id="homeTitle">把一份礼物，<br /><span class="script-word">挂进</span>这个圣诞夜。</h1>
-            <p class="hero-lead">领一只只属于你的小动物，挂上今晚的圣诞树；写一封匿名或署名的贺卡，让圣诞老人替你送达。最后，和 TA 对一对心照不宣的圣诞暗号。</p>
+            <p class="hero-lead">先看看今晚的公共圣诞树，再领一只专属的小动物和装扮；送出贺卡后，你就会留在树上。最后，和 TA 对一对心照不宣的圣诞暗号。</p>
             <div class="hero-cta">
               <button class="btn btn-primary" type="button" data-route="gifts">
                 <span>开始交换礼物</span>
@@ -226,7 +226,7 @@
                 <div class="scene-sticker">SANTA<br />IS COMING<span>✦</span></div>
               </div>
               <div class="hero-tag tag-one"><span class="tag-dot"></span>今晚 21:00 · 圣诞老人出发</div>
-              <div class="hero-tag tag-two"><svg><use href="#i-sparkle"/></svg>每只小动物只出现一次</div>
+              <div class="hero-tag tag-two"><svg><use href="#i-sparkle"/></svg>动物 + 装扮，只属于一个人</div>
               <div class="countdown-card" aria-label="距离圣诞夜倒计时">
                 <div class="countdown-head"><span>距离圣诞夜</span><span class="live-pill"><i></i>LIVE</span></div>
                 <div class="countdown-clock" id="countdown">
@@ -242,10 +242,30 @@
 
         <div class="ticker" aria-hidden="true">
           <div class="ticker-track">
-            <span>匿名贺卡</span><i>✦</i><span>独一无二的小动物</span><i>✧</i><span>圣诞老人速递</span><i>✦</i><span>默契度测试</span><i>✧</i><span>雪球愿望</span><i>✦</i><span>热可可无限续杯</span><i>✧</i>
-            <span>匿名贺卡</span><i>✦</i><span>独一无二的小动物</span><i>✧</i><span>圣诞老人速递</span><i>✦</i><span>默契度测试</span><i>✧</i><span>雪球愿望</span><i>✦</i><span>热可可无限续杯</span><i>✧</i>
+            <span>匿名贺卡</span><i>✦</i><span>专属动物与装扮</span><i>✧</i><span>圣诞老人速递</span><i>✦</i><span>默契度测试</span><i>✧</i><span>雪球愿望</span><i>✦</i><span>热可可无限续杯</span><i>✧</i>
+            <span>匿名贺卡</span><i>✦</i><span>专属动物与装扮</span><i>✧</i><span>圣诞老人速递</span><i>✦</i><span>默契度测试</span><i>✧</i><span>雪球愿望</span><i>✦</i><span>热可可无限续杯</span><i>✧</i>
           </div>
         </div>
+
+        <section class="home-tree-section" aria-labelledby="homeTreeTitle">
+          <div class="section-head home-tree-head">
+            <div>
+              <span class="kicker">LIVE FROM THE CHRISTMAS TREE</span>
+              <h2 id="homeTreeTitle">今晚，<em>谁在树上？</em></h2>
+            </div>
+            <div class="home-tree-live"><span class="pulse-dot"></span><span id="homeTreeLiveText">正在同步今晚的圣诞树…</span></div>
+          </div>
+          <div class="home-tree-board">
+            <div class="home-tree-copy">
+              <p>每一个送出礼物的人，都会以自己领到的小动物和装扮，留在公共圣诞树上。别人打开主页，就能看见今晚的星星。</p>
+              <div class="home-tree-actions">
+                <button class="btn btn-light btn-small" type="button" data-route="tree"><svg><use href="#i-tree"/></svg><span>看看整棵树</span></button>
+                <button class="text-link light" type="button" data-join-tree>领一只小动物 <svg><use href="#i-arrow"/></svg></button>
+              </div>
+            </div>
+            <div class="home-tree-people" id="homeTreePeople" aria-live="polite"></div>
+          </div>
+        </section>
 
         <section class="feature-section" aria-labelledby="featureTitle">
           <div class="section-head">
@@ -253,7 +273,7 @@
               <span class="kicker">TONIGHT'S LITTLE RITUALS</span>
               <h2 id="featureTitle">三件小事，<em>把圣诞夜点亮。</em></h2>
             </div>
-            <p>像拆开一份被仔细包好的礼物那样，慢慢来。每一件小事都会留在这台设备里，等你回来。</p>
+            <p>像拆开一份被仔细包好的礼物那样，慢慢来。贺卡文字留在本机，树上的形象会留给今晚。</p>
           </div>
           <div class="feature-grid">
             <article class="feature-card feature-gift">
@@ -274,8 +294,8 @@
               <div class="feature-top"><span class="feature-num">02</span><span class="feature-icon"><svg><use href="#i-tree"/></svg></span></div>
               <div class="feature-copy">
                 <h3>动物圣诞树</h3>
-                <p>每个进入圣诞夜的人，都会领到一只不能重复的小动物。把它挂在树梢上，就是今晚的星星。</p>
-                <button class="text-link" type="button" data-route="tree">去挂上我的动物 <svg><use href="#i-arrow"/></svg></button>
+                <p>挑一只小动物，再给它配一套圣诞装扮。每只动物加装扮只属于一个人；送出礼物后，就会留在公共圣诞树上。</p>
+                <button class="text-link" type="button" data-route="tree">看看今晚的树 <svg><use href="#i-arrow"/></svg></button>
               </div>
               <div class="feature-art" aria-hidden="true">
                 <span class="art-bauble a">🦊</span><span class="art-bauble b">🐧</span><span class="art-bauble c">🐻</span>
@@ -438,7 +458,7 @@
           <div class="page-head-copy">
             <span class="kicker">02 / ANIMAL CHRISTMAS TREE</span>
             <h1 id="treeTitle">每只小动物，<br /><em>都是今晚的一颗星。</em></h1>
-            <p>你领到的小动物已经拥有自己的位置。也可以帮来访的朋友挑一只，把它挂在树上。记住：同一只小动物，只会出现一次。</p>
+            <p>这里是一棵属于所有人的公共圣诞树。每个送出礼物的人，会带着自己独一份的小动物和装扮留在树上；同一套形象，只属于一个人。</p>
           </div>
           <div class="page-head-stamp stamp-tree" aria-hidden="true"><span>ON TREE</span><b id="treeStampCount">01</b><i>UNIQUE ANIMALS</i></div>
         </div>
@@ -498,7 +518,7 @@
                 </g>
               </svg>
               <div class="tree-ornaments" id="treeOrnaments"></div>
-              <div class="tree-empty-note" id="treeEmptyNote" hidden>树上还空空的，去领一只小动物吧。</div>
+              <div class="tree-empty-note" id="treeEmptyNote" hidden>树上还空空的。第一份礼物送出去，第一位小动物就会亮起来。</div>
             </div>
             <div class="tree-stage-foot">
               <p><span class="pulse-dot"></span><strong id="treeFootCount">0</strong> 只小动物正在树上过圣诞</p>
@@ -508,37 +528,35 @@
 
           <aside class="tree-side">
             <div class="side-card cream-panel my-animal-card">
-              <div class="side-card-head"><span class="kicker dark">YOUR LITTLE ONE</span><span class="mini-badge">UNIQUE</span></div>
+              <div class="side-card-head"><span class="kicker dark">YOUR LITTLE ONE</span><span class="mini-badge" id="myAnimalStatus">GUEST</span></div>
               <div class="my-animal" id="myAnimalCard">
-                <div class="my-animal-orb"><span id="myAnimalEmoji">🦊</span><i></i></div>
-                <div><strong id="myAnimalName">小狐狸</strong><p id="myAnimalVibe">鬼灵精，嘴硬心软</p></div>
+                <div class="my-animal-orb" id="myAnimalAvatar"><span class="my-animal-ghost">?</span></div>
+                <div><strong id="myAnimalName">还没加入</strong><p id="myAnimalVibe">先领一只小动物，再送出第一份礼物。</p><span class="my-animal-outfit" id="myAnimalOutfit"></span></div>
               </div>
-              <p class="side-note">它已经在树上了。每只小动物只能被领走一次，所以你们都是独一无二的。</p>
+              <p class="side-note" id="myAnimalNote">加入后，你的动物和装扮会被保留；送出礼物后才会出现在公共圣诞树上。</p>
+              <button class="btn btn-primary btn-small my-animal-action" id="treeActionBtn" type="button"><span>加入圣诞夜</span><svg><use href="#i-arrow"/></svg></button>
             </div>
 
-            <div class="side-card cream-panel">
-              <div class="side-card-head"><span class="kicker dark">HANG A FRIEND</span><span class="mini-badge">GUEST</span></div>
-              <h3>帮一位访客上树</h3>
-              <p class="side-copy">写下 TA 的名字，再挑一只还没被领走的小动物。</p>
-              <form id="hangForm" class="hang-form">
-                <label class="field"><span class="field-label">访客昵称</span><input id="hangName" maxlength="10" placeholder="例如：冬冬" required /></label>
-                <div class="animal-tray" id="animalTray" role="group" aria-label="可领养的小动物"></div>
-                <div class="hang-foot">
-                  <span class="hang-hint" id="hangHint">挑一只小动物</span>
-                  <button class="btn btn-primary btn-small" type="submit" id="hangBtn"><span>挂上树</span><svg><use href="#i-tree"/></svg></button>
-                </div>
-              </form>
+            <div class="side-card cream-panel tree-rules-card">
+              <div class="side-card-head"><span class="kicker dark">HOW IT WORKS</span><span class="mini-badge">LIVE</span></div>
+              <h3>先送礼物，<br />再点亮树梢。</h3>
+              <p class="side-copy">这棵树不是一台设备里的装饰，而是所有访客共享的今晚。</p>
+              <ol class="tree-rules">
+                <li><b>01</b><span>领一只小动物，再挑一套装扮。动物 + 装扮只属于一个名字。</span></li>
+                <li><b>02</b><span>写一张贺卡送出。送出后，你会被记录在公共树上。</span></li>
+                <li><b>03</b><span>别人打开主页，就能看到树上的你，也能送出下一份礼物。</span></li>
+              </ol>
             </div>
 
             <div class="side-card night-card">
-              <span class="kicker">YOUR TREE IS A POSTCARD</span>
-              <h3>让朋友也来看看<br />你的圣诞树。</h3>
-              <p>把链接发给 TA，TA 的小动物也会在树上找到位置。所有内容都留在这台设备里。</p>
+              <span class="kicker">THE TREE IS A POSTCARD</span>
+              <h3>把这棵公共圣诞树<br />发给下一位朋友。</h3>
+              <p>TA 可以先逛逛主页和树，再决定要不要领一只小动物。礼物文字仍然只留在送出者的设备里。</p>
               <button class="btn btn-light btn-small" type="button" data-share-tree><svg><use href="#i-share"/></svg><span>复制树的链接</span></button>
             </div>
 
             <div class="ornament-list-card">
-              <div class="ornament-list-head"><span>ON THE TREE</span><span id="ornamentListCount">0 / 14</span></div>
+              <div class="ornament-list-head"><span>ON THE TREE</span><span id="ornamentListCount">0 / 24</span></div>
               <div class="ornament-list" id="ornamentList"></div>
             </div>
           </aside>
@@ -567,7 +585,7 @@
 
     <footer class="site-footer">
       <div class="footer-brand"><span class="brand-mark small" aria-hidden="true"><svg viewBox="0 0 44 44"><path class="brand-star" d="M22 4.5 26.5 16l11.5 4.5L26.5 25 22 36.5 17.5 25 6 20.5 17.5 16z"/><circle cx="22" cy="20.8" r="5.2"/></svg></span><span>MERRY &amp; BRIGHT<br /><small>圣诞礼物交换所</small></span></div>
-      <p>这是一个纯前端的小小圣诞宇宙。礼物、愿望和小动物，都只保存在你的浏览器里。</p>
+      <p>礼物和愿望留在你的浏览器里；名字、动物和装扮会作为今晚的星星，出现在公共圣诞树上。</p>
       <div class="footer-actions">
         <button class="footer-link" type="button" id="motionToggle" aria-pressed="false"><svg><use href="#i-sparkle"/></svg><span>轻量动效：关</span></button>
         <button class="footer-link" type="button" id="resetAll"><svg><use href="#i-refresh"/></svg>重新开始这段圣诞故事</button>
@@ -587,6 +605,7 @@
   <div class="onboarding" id="onboarding" role="dialog" aria-modal="true" aria-labelledby="onboardTitle" hidden>
     <div class="onboarding-backdrop"></div>
     <div class="onboarding-card">
+      <button class="onboarding-close" id="onboardClose" type="button" aria-label="先随便逛逛"><svg><use href="#i-close"/></svg></button>
       <div class="onboard-art">
         <div class="onboard-window">
           <div class="onboard-moon"></div>
@@ -594,28 +613,40 @@
           <div class="onboard-tree"><i></i><i></i><i></i><b>★</b></div>
           <div class="onboard-santa"><svg viewBox="0 0 280 210"><use href="#santa-fly"/></svg></div>
           <div class="onboard-snow"></div>
-          <div class="onboard-preview" id="onboardPreview"><span>🦊</span><i>你的小动物</i></div>
+          <div class="onboard-preview" id="onboardPreview"></div>
         </div>
         <div class="onboard-art-copy">
           <span class="kicker">WELCOME TO THE CLUB</span>
-          <p>「每只小动物只会出现一次。」</p>
+          <p>「同一个动物 + 装扮，只会出现一次。」</p>
         </div>
       </div>
       <div class="onboard-body">
         <div class="onboard-head">
           <span class="kicker">BEFORE WE BEGIN</span>
-          <span class="onboard-step">STEP 1 / 1</span>
+          <span class="onboard-step" id="onboardStepLabel">STEP 1 / 2</span>
         </div>
         <h2 id="onboardTitle">先领一只<br /><em>属于你的圣诞小动物。</em></h2>
-        <p class="onboard-lead">它会是你在今晚的名字，也会被挂到圣诞树上。选好之后，就不能换成别人啦。</p>
-        <label class="field onboard-name-field"><span class="field-label">怎么称呼你？</span><input id="onboardName" maxlength="10" placeholder="例如：小满" autocomplete="off" /></label>
-        <div class="animal-picker-head"><span class="field-label">挑一只小动物</span><span id="animalClaimInfo">每只只能领一次</span></div>
-        <div class="animal-picker" id="animalPicker" role="group" aria-label="选择你的小动物"></div>
-        <div class="onboard-foot">
-          <div class="onboard-picked" id="onboardPicked"><span>还没有选择</span><small>挑一只喜欢的吧</small></div>
-          <button class="btn btn-primary" id="onboardSubmit" type="button" disabled><span>系上铃铛，进入圣诞夜</span><svg><use href="#i-arrow"/></svg></button>
+        <p class="onboard-lead" id="onboardLead">它会是你在今晚的名字。选好动物和装扮后，它们会被保留下来，等你的第一份礼物送出。</p>
+
+        <div id="onboardStepOne">
+          <label class="field onboard-name-field"><span class="field-label">怎么称呼你？</span><input id="onboardName" maxlength="12" placeholder="例如：小满" autocomplete="off" /><small class="field-hint" id="onboardNameHint">2–12 个字，全站只能有一个人用</small></label>
+          <div class="animal-picker-head"><span class="field-label">挑一只小动物</span><span id="animalClaimInfo">每只都可以选，装扮不能重复</span></div>
+          <div class="animal-picker" id="animalPicker" role="group" aria-label="选择你的小动物"></div>
         </div>
-        <p class="onboard-note">你的选择会保存在本机浏览器，不需要登录，也不会被上传。</p>
+
+        <div id="onboardStepTwo" hidden>
+          <div class="animal-picker-head"><span class="field-label">再挑一套圣诞装扮</span><span id="outfitClaimInfo">同一种动物 + 装扮只能有一个人</span></div>
+          <div class="outfit-picker" id="outfitPicker" role="group" aria-label="选择你的圣诞装扮"></div>
+          <div class="onboard-selected" id="onboardPicked"></div>
+        </div>
+
+        <div class="onboard-foot">
+          <button class="btn btn-ghost onboard-back" id="onboardBack" type="button" hidden><span>上一步</span></button>
+          <button class="btn btn-primary" id="onboardNext" type="button"><span>下一步：挑装扮</span><svg><use href="#i-arrow"/></svg></button>
+          <button class="btn btn-primary" id="onboardSubmit" type="button" hidden><span>系上铃铛，去送礼物</span><svg><use href="#i-arrow"/></svg></button>
+        </div>
+        <p class="onboard-note">名字和形象会公开显示在公共圣诞树上；贺卡文字仍然只保存在你的设备里。</p>
+        <button class="onboard-skip" id="onboardSkip" type="button">先随便逛逛，不加入</button>
       </div>
     </div>
   </div>
@@ -630,6 +661,9 @@
   </div>
   <canvas id="confetti" aria-hidden="true"></canvas>
 
+  <script src="mqtt.min.js"></script>
+  <script src="shared.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
+
