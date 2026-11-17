@@ -10,30 +10,12 @@
    ------------------------------------------------------------ */
 
 const STORE_KEY = 'merry-bright-v1';
-const MAX_TREE_SLOTS = 14;
+const MAX_TREE_SLOTS = 24;
 
 let state = null;
-
-const ANIMALS = [
-  { id: 'fox', emoji: '🦊', name: '小狐狸', vibe: '鬼灵精，嘴硬心软', orb: '#efbd8a', orbDark: '#a8673e', bow: '#e8423f' },
-  { id: 'rabbit', emoji: '🐰', name: '雪兔', vibe: '耳朵先听见冬天', orb: '#f6d9db', orbDark: '#bd8b93', bow: '#e46c86' },
-  { id: 'bear', emoji: '🐻', name: '棕熊', vibe: '看起来凶，其实想抱抱', orb: '#d5a06e', orbDark: '#8f5c36', bow: '#c47b3d' },
-  { id: 'penguin', emoji: '🐧', name: '企鹅', vibe: '走路摇摇摆摆，心里有数', orb: '#b9d9ee', orbDark: '#557c9b', bow: '#4d8bb5' },
-  { id: 'deer', emoji: '🦌', name: '小鹿', vibe: '把星光顶在脑袋上', orb: '#e9c58e', orbDark: '#a4783f', bow: '#7fc7a2' },
-  { id: 'panda', emoji: '🐼', name: '熊猫', vibe: '熬夜冠军，抱竹子专家', orb: '#e8e8ef', orbDark: '#a4a4b4', bow: '#5e6979' },
-  { id: 'cat', emoji: '🐱', name: '小猫', vibe: '看心情亲近你', orb: '#f2cda3', orbDark: '#b27c48', bow: '#e8a04b' },
-  { id: 'dog', emoji: '🐶', name: '小狗', vibe: '一叫名字就摇成螺旋桨', orb: '#e8c192', orbDark: '#a76d3f', bow: '#d7723b' },
-  { id: 'sheep', emoji: '🐑', name: '小羊', vibe: '云朵成精，软乎乎', orb: '#f7edf1', orbDark: '#bda8b4', bow: '#e7a9c0' },
-  { id: 'hamster', emoji: '🐹', name: '仓鼠', vibe: '腮帮子里藏了三颗糖', orb: '#f1cdb2', orbDark: '#b37d5e', bow: '#e29477' },
-  { id: 'owl', emoji: '🦉', name: '猫头鹰', vibe: '夜间巡逻，顺便看星星', orb: '#c1b2de', orbDark: '#766594', bow: '#8a72bf' },
-  { id: 'tiger', emoji: '🐯', name: '小老虎', vibe: '奶凶奶凶，超好哄', orb: '#f1c183', orbDark: '#b17b34', bow: '#de7e35' },
-  { id: 'unicorn', emoji: '🦄', name: '独角兽', vibe: '愿望批发商，偶尔失灵', orb: '#e6c7f0', orbDark: '#9b6eae', bow: '#c67fd6' },
-  { id: 'koala', emoji: '🐨', name: '考拉', vibe: '慢半拍，但很认真', orb: '#d3d5df', orbDark: '#8f93a4', bow: '#7d93a8' },
-  { id: 'frog', emoji: '🐸', name: '小青蛙', vibe: '雨天限定快乐冠军', orb: '#c2df9f', orbDark: '#78954d', bow: '#6c9b45' },
-  { id: 'seal', emoji: '🦭', name: '海豹', vibe: '肚皮很软，心事很少', orb: '#cbd8e8', orbDark: '#8296ae', bow: '#7296b0' }
-];
-
-const ANIMAL_MAP = new Map(ANIMALS.map((animal) => [animal.id, animal]));
+let sharedTree = null;
+let sharedStatus = 'idle';
+let onboardStep = 1;
 
 const GIFT_TYPES = [
   { id: 'cocoa', emoji: '☕', label: '热可可' },
@@ -124,20 +106,21 @@ const DEMO_HOST = {
 // Ordered so that the first few arrivals are spread across the tree,
 // rather than all bunching up on the top branches.
 const TREE_SLOTS = [
-  { x: 50, y: 44.3 },
-  { x: 34.3, y: 70.8 },
-  { x: 66.5, y: 71.5 },
-  { x: 41.5, y: 58.6 },
-  { x: 57.4, y: 59.6 },
-  { x: 50, y: 29.4 },
-  { x: 39.7, y: 37.1 },
-  { x: 60.8, y: 38.6 },
-  { x: 21.2, y: 78.6 },
-  { x: 72.3, y: 55.7 },
-  { x: 38.7, y: 82.6 },
-  { x: 62, y: 83.1 },
-  { x: 27.2, y: 55.2 },
-  { x: 50.4, y: 73.7 }
+  { x: 50, y: 19 },
+  { x: 42, y: 35 },
+  { x: 58, y: 35 },
+  { x: 32, y: 51 },
+  { x: 50, y: 51 },
+  { x: 68, y: 51 },
+  { x: 24, y: 67 },
+  { x: 41, y: 67 },
+  { x: 59, y: 67 },
+  { x: 76, y: 67 },
+  { x: 18, y: 82 },
+  { x: 34, y: 82 },
+  { x: 50, y: 82 },
+  { x: 66, y: 82 },
+  { x: 82, y: 82 }
 ];
 
 const WISH_TONES = [
@@ -176,10 +159,6 @@ function esc(value) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
-}
-
-function getAnimal(id) {
-  return ANIMAL_MAP.get(id) || ANIMALS[0];
 }
 
 function getGiftType(id) {
@@ -386,7 +365,12 @@ function loadState() {
   if (!raw || typeof raw !== 'object') return fallback;
 
   const profile = raw.profile && ANIMAL_MAP.has(raw.profile.animalId)
-    ? { name: String(raw.profile.name || '小满').slice(0, 12), animalId: raw.profile.animalId }
+    ? {
+      id: String(raw.profile.id || uid('acct')),
+      name: String(raw.profile.name || '小满').slice(0, 12),
+      animalId: raw.profile.animalId,
+      outfitId: OUTFIT_MAP.has(raw.profile.outfitId) ? raw.profile.outfitId : 'santa'
+    }
     : null;
 
   const gifts = Array.isArray(raw.gifts)
@@ -523,7 +507,7 @@ function buildInviteLink() {
     n: state.profile.name,
     a: state.profile.animalId,
     q: state.hostAnswers ? state.hostAnswers.join('') : '',
-    t: state.tree.slice(0, 12).map((entry) => [entry.animalId, entry.name])
+    t: sharedTreeUsers(sharedTree).slice(0, 12).map((user) => [user.animal, user.name])
   };
   return `${location.origin}${location.pathname}${location.search}#invite=${encodeToken(payload)}`;
 }
@@ -903,13 +887,35 @@ function confirmReset() {
       <button class="modal-close" type="button" data-modal-close aria-label="关闭">${icon('close')}</button>
       <span class="kicker">ONE MORE NIGHT?</span>
       <h3 id="resetTitle">要重新开始这段<br>圣诞故事吗？</h3>
-      <p>礼物、愿望、小动物和默契答案都会被清空。这个动作没办法被雪覆盖，也无法撤回。</p>
+      <p>礼物、愿望、小动物和默契答案都会被清空；你在公共圣诞树上的形象也会一起移除。这个动作没办法被雪覆盖，也无法撤回。</p>
       <div class="modal-actions">
         <button class="btn btn-ghost" type="button" data-modal-close style="color:#5d4434;border-color:#d9bc94;background:#fffaf0">再想想</button>
         <button class="btn btn-danger" type="button" id="confirmReset">重新开始</button>
       </div>
     </div>
   `);
+}
+
+async function resetStory() {
+  const id = state.profile?.id;
+  if (id) {
+    try {
+      await remote.mutate((draft) => {
+        delete draft.users[id];
+        draft.reports = draft.reports.filter((report) => report.userId !== id);
+        return { ok: true };
+      });
+    } catch (error) {
+      // A local reset still works when the relay is unavailable.
+    }
+  }
+  try {
+    localStorage.removeItem(STORE_KEY);
+  } catch (error) {
+    // ignore
+  }
+  location.hash = '';
+  location.reload();
 }
 
 /* ------------------------------------------------------------
@@ -1005,34 +1011,218 @@ function showRoute(route, options = {}) {
   }
 }
 
+function mySharedUser() {
+  return sharedUserFor(sharedTree, state.profile);
+}
+
+function publicTreeUsers() {
+  return sharedTreeUsers(sharedTree);
+}
+
+function sharedGiftTotal() {
+  if (!sharedTree) return 0;
+  return Object.values(sharedTree.users).reduce((sum, user) => sum + (Number(user.sendCount) || 0), 0);
+}
+
 function updateHeader() {
-  if (!state.profile) return;
+  const emoji = $('#profileEmoji');
+  const name = $('#profileName');
+  const caption = $('.profile-meta small');
+  const chip = $('#profileChip');
+  if (!state.profile) {
+    if (emoji) emoji.textContent = '🎄';
+    if (name) name.textContent = '加入圣诞夜';
+    if (caption) caption.textContent = '访客';
+    chip?.setAttribute('aria-label', '加入圣诞夜');
+    return;
+  }
   const animal = getAnimal(state.profile.animalId);
-  $('#profileEmoji').textContent = animal.emoji;
-  $('#profileName').textContent = state.profile.name;
-  $('#profileChip').setAttribute('aria-label', `${state.profile.name}，你的小动物是${animal.name}`);
+  if (emoji) emoji.innerHTML = avatarMarkup(state.profile.animalId, state.profile.outfitId, { size: 30 });
+  if (name) name.textContent = state.profile.name;
+  if (caption) caption.textContent = `${animal.name} · ${getOutfit(state.profile.outfitId).name}`;
+  chip?.setAttribute('aria-label', `${state.profile.name}，你的形象是${animal.name}加${getOutfit(state.profile.outfitId).name}`);
 }
 
 function updateStats() {
   const best = state.guestResults.length
     ? Math.max(...state.guestResults.map((result) => Number(result.score) || 0))
     : null;
-  $('#statAnimals').textContent = String(state.tree.length);
-  $('#statGifts').textContent = String(state.gifts.length);
+  $('#statAnimals').textContent = String(publicTreeUsers().length);
+  $('#statGifts').textContent = String(sharedGiftTotal());
   $('#statMatch').textContent = best == null ? '--' : `${best}%`;
 }
 
+async function syncExistingProfile() {
+  if (!state.profile || mySharedUser()) return;
+  if (!remote.connected && sharedStatus !== 'ready') return;
+  const outcome = await remote.mutate((draft) => {
+    const id = state.profile.id;
+    const existing = draft.users[id];
+    if (existing?.banned) return { error: 'banned' };
+    if (sharedNameConflict(draft, state.profile.name, id)) return { error: 'name-taken' };
+    if (sharedComboConflict(draft, state.profile.animalId, state.profile.outfitId, id)) return { error: 'combo-taken' };
+    const now = Date.now();
+    draft.users[id] = Object.assign({}, existing || {}, {
+      id,
+      name: state.profile.name,
+      nameKey: nameKey(state.profile.name),
+      animal: state.profile.animalId,
+      outfit: state.profile.outfitId,
+      createdAt: existing?.createdAt || now,
+      onTree: Boolean(existing?.onTree),
+      treeAt: existing?.treeAt || null,
+      sendCount: existing?.sendCount || 0,
+      lastSendAt: existing?.lastSendAt || null,
+      banned: false,
+      hidden: false,
+      banReason: '',
+      bannedAt: null
+    });
+    return { ok: true };
+  });
+  if (outcome.error === 'name-taken' || outcome.error === 'combo-taken') {
+    showToast('你的旧名字或形象已经被占用了，重新挑一个吧', '❄️');
+    openOnboarding({ upgrade: true, forced: true });
+  }
+}
+
+let sharedSendWarned = false;
+
+async function recordGiftOnTree() {
+  if (!state.profile) return { error: 'guest' };
+  if (!mySharedUser()) {
+    await syncExistingProfile();
+    if (!mySharedUser()) return { error: 'not-registered' };
+  }
+  const outcome = await remote.mutate((draft) => {
+    const user = draft.users[state.profile.id];
+    if (!user) return { error: 'not-registered' };
+    if (user.banned) return { error: 'banned' };
+    const first = !user.onTree;
+    const now = Date.now();
+    user.onTree = true;
+    user.treeAt = user.treeAt || now;
+    user.sendCount = (Number(user.sendCount) || 0) + 1;
+    user.lastSendAt = now;
+    return { ok: true, first };
+  });
+  if (outcome.error === 'banned') {
+    showToast('这个账号已经被管理员限制，礼物只保存在本机', '🚫');
+    return outcome;
+  }
+  if (outcome.error) {
+    if (!sharedSendWarned) {
+      sharedSendWarned = true;
+      showToast('公共树暂时没连上，礼物仍保存在这台设备里', '📡');
+    }
+    return outcome;
+  }
+  newOrnamentId = state.profile.id;
+  renderPublicChrome();
+  if (outcome.first) {
+    window.setTimeout(() => showToast('你的形象已经在公共圣诞树上亮起来啦', '🌟'), 1300);
+  }
+  return outcome;
+}
+
 function renderHeroAnimal() {
-  if (!state.profile) return;
-  const animal = getAnimal(state.profile.animalId);
-  const third = $$('#heroAnimals .scene-animal')[2];
-  if (!third) return;
-  third.style.setProperty('--x', '62%');
-  third.style.setProperty('--y', '58%');
-  const emoji = $('span', third);
-  const label = $('i', third);
-  if (emoji) emoji.textContent = animal.emoji;
-  if (label) label.textContent = state.profile.name;
+  const root = $('#heroAnimals');
+  if (!root) return;
+  const users = publicTreeUsers().slice(-3);
+  const positions = [
+    { x: 31, y: 53 },
+    { x: 47, y: 68 },
+    { x: 62, y: 58 }
+  ];
+  if (!users.length) {
+    root.innerHTML = `
+      <span class="scene-animal is-empty" style="--x:47%;--y:62%;--delay:-1.2s">
+        <span class="scene-avatar"><span class="scene-ghost">?</span></span>
+        <i>等你上树</i>
+      </span>
+    `;
+    return;
+  }
+  root.innerHTML = users.map((user, index) => {
+    const slot = positions[index % positions.length];
+    return `
+      <button class="scene-animal" type="button" data-home-person="${esc(user.id)}" style="--x:${slot.x}%;--y:${slot.y}%;--delay:-${index + 1}.2s" aria-label="${esc(user.name)}的${esc(getAnimal(user.animal).name)}在圣诞树上">
+        <span class="scene-avatar">${avatarMarkup(user.animal, user.outfit, { size: 54 })}</span>
+        <i>${esc(user.name)}</i>
+      </button>
+    `;
+  }).join('');
+}
+
+function renderHomeTree() {
+  const root = $('#homeTreePeople');
+  const live = $('#homeTreeLiveText');
+  if (!root) return;
+  const users = publicTreeUsers();
+  if (live) {
+    if (!sharedTree && ['idle', 'connecting'].includes(sharedStatus)) {
+      live.textContent = '正在同步今晚的圣诞树…';
+    } else {
+      live.textContent = users.length
+        ? `${users.length} 位朋友正在树上过圣诞`
+        : '树上还空着，等第一位送出礼物的人';
+    }
+  }
+  if (!users.length) {
+    root.innerHTML = `
+      <div class="home-tree-empty">
+        <span class="home-tree-empty-mark">✦</span>
+        <strong>今晚的第一颗星星，还在路上。</strong>
+        <small>领一只小动物，送出第一份礼物，这里就会出现你。</small>
+        <button class="text-link light" type="button" data-join-tree>去成为第一位 <svg><use href="#i-arrow"/></svg></button>
+      </div>
+    `;
+    return;
+  }
+  const visible = users.slice(-12).reverse();
+  const rest = users.length - visible.length;
+  root.innerHTML = `
+    <div class="home-tree-people-grid">
+      ${visible.map((user) => `
+        <button class="home-person" type="button" data-home-person="${esc(user.id)}" aria-label="${esc(user.name)}，${esc(getAnimal(user.animal).name)}，${esc(getOutfit(user.outfit).name)}">
+          ${avatarMarkup(user.animal, user.outfit, { size: 54 })}
+          <strong>${esc(user.name)}</strong>
+          <small>${esc(getOutfit(user.outfit).name)}</small>
+        </button>
+      `).join('')}
+    </div>
+    ${rest > 0 ? `<button class="home-tree-more" type="button" data-route="tree">还有 ${rest} 位在树上 <svg><use href="#i-arrow"/></svg></button>` : ''}
+  `;
+}
+
+function renderPublicChrome() {
+  updateHeader();
+  updateStats();
+  renderHeroAnimal();
+  renderHomeTree();
+  if (currentRoute === 'tree') renderTree();
+}
+
+let banNoticeShown = false;
+
+function handleSharedUpdate(snapshot, status) {
+  sharedTree = snapshot;
+  sharedStatus = status;
+  renderPublicChrome();
+  if (!$('#onboarding').hidden) renderOnboarding();
+  const me = mySharedUser();
+  if (me?.banned && state.profile && !banNoticeShown) {
+    banNoticeShown = true;
+    openModal(`
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="banTitle">
+        <button class="modal-close" type="button" data-modal-close aria-label="关闭">${icon('close')}</button>
+        <span class="kicker">THE TREE HAS A KEEPER</span>
+        <h3 id="banTitle">你已经被移出圣诞夜</h3>
+        <p>管理员把你的形象从公共圣诞树上取下来了。${me.banReason ? `原因：${esc(me.banReason)}` : '如果你觉得这是误会，可以联系管理员。'}</p>
+        <div class="modal-actions"><button class="btn btn-primary" type="button" data-modal-close>${icon('check')}知道了</button></div>
+      </div>
+    `);
+  }
 }
 
 function updateSoundButton() {
@@ -1058,24 +1248,64 @@ function applyMotionPreference() {
    ------------------------------------------------------------ */
 
 let selectedOnboardAnimal = null;
-let onboardClaimed = new Set();
+let selectedOnboardOutfit = null;
+let onboardForced = false;
 
-function claimedForOnboarding() {
-  const claimed = new Set(state.tree.map((entry) => entry.animalId));
-  if (state.profile) claimed.add(state.profile.animalId);
-  if (inviteHost) {
-    claimed.add(inviteHost.animalId);
-    inviteHost.tree.forEach((entry) => claimed.add(entry.animalId));
+function makeAccountId() {
+  try {
+    return `acct-${crypto.randomUUID()}`;
+  } catch (error) {
+    return uid('acct');
   }
-  return claimed;
 }
 
-function openOnboarding() {
+function claimedCombos() {
+  return new Set(Object.values(sharedTree?.users || {})
+    .filter((user) => user.id !== state.profile?.id)
+    .map((user) => `${user.animal}:${user.outfit}`));
+}
+
+function availableOutfitsFor(animalId) {
+  const taken = claimedCombos();
+  return OUTFITS.filter((outfit) => !taken.has(`${animalId}:${outfit.id}`));
+}
+
+function comboIsTaken(animalId, outfitId) {
+  return Boolean(sharedComboConflict(sharedTree, animalId, outfitId, state.profile?.id));
+}
+
+function nameProblem(name) {
+  if (!name) return '先写下你的名字吧';
+  if (!validPlayerName(name)) return '名字需要 2–12 个字，不要带特殊符号';
+  if (sharedNameConflict(sharedTree, name, state.profile?.id)) return '这个名字已经被领走了，换一个吧';
+  return '';
+}
+
+function onboardingTotalClaimed() {
+  return Object.keys(sharedTree?.users || {}).filter((id) => id !== state.profile?.id).length;
+}
+
+function openOnboarding(options = {}) {
   const overlay = $('#onboarding');
   if (!overlay) return;
+  if (state.profile && mySharedUser() && !options.upgrade) {
+    showToast('你已经有自己的形象啦，去送一份礼物吧', '🎁');
+    return;
+  }
+  onboardForced = Boolean(options.forced);
   overlay.hidden = false;
   document.body.classList.add('is-locked');
-  onboardClaimed = claimedForOnboarding();
+  onboardStep = 1;
+
+  if (state.profile) {
+    selectedOnboardAnimal = state.profile.animalId;
+    selectedOnboardOutfit = state.profile.outfitId || null;
+  } else {
+    selectedOnboardAnimal = null;
+    selectedOnboardOutfit = null;
+  }
+  const nameInput = $('#onboardName');
+  if (nameInput && state.profile) nameInput.value = state.profile.name;
 
   if (inviteHost) {
     const copy = $('.onboard-art-copy p');
@@ -1085,102 +1315,307 @@ function openOnboarding() {
     if (copy) copy.textContent = '「有人把一份礼物，悄悄放在了你的门口。」';
   }
 
-  renderOnboardingPicker();
-  window.setTimeout(() => $('#onboardName').focus(), 300);
+  renderOnboarding();
+  window.setTimeout(() => nameInput?.focus(), 300);
 }
 
-function renderOnboardingPicker() {
+function closeOnboarding() {
+  const overlay = $('#onboarding');
+  if (!overlay) return;
+  overlay.hidden = true;
+  if ($('#modalRoot').hidden) document.body.classList.remove('is-locked');
+  if (!state.profile) {
+    $('#app').hidden = false;
+    renderPublicChrome();
+  }
+}
+
+function onboardingTitleForStep(step) {
+  return step === 1
+    ? '先领一只<br /><em>属于你的圣诞小动物。</em>'
+    : '再给它，<br /><em>挑一套圣诞装扮。</em>';
+}
+
+function onboardingLeadForStep(step) {
+  return step === 1
+    ? '它会是你在今晚的名字。选好动物和装扮后，它们会被保留下来，等你的第一份礼物送出。'
+    : '同一只动物，不同的装扮，就是不同的人。动物 + 装扮只属于一个人，选一个还没被领走的吧。';
+}
+
+function renderOnboarding() {
+  const stepLabel = $('#onboardStepLabel');
+  const title = $('#onboardTitle');
+  const lead = $('#onboardLead');
+  const stepOne = $('#onboardStepOne');
+  const stepTwo = $('#onboardStepTwo');
+  const next = $('#onboardNext');
+  const submit = $('#onboardSubmit');
+  const back = $('#onboardBack');
+  if (!stepLabel) return;
+
+  stepLabel.textContent = `STEP ${onboardStep} / 2`;
+  if (title) title.innerHTML = onboardingTitleForStep(onboardStep);
+  if (lead) lead.textContent = onboardingLeadForStep(onboardStep);
+  if (stepOne) stepOne.hidden = onboardStep !== 1;
+  if (stepTwo) stepTwo.hidden = onboardStep !== 2;
+  if (next) next.hidden = onboardStep === 2;
+  if (submit) submit.hidden = onboardStep !== 2;
+  if (back) back.hidden = onboardStep !== 2;
+
+  if (onboardStep === 2 && selectedOnboardAnimal) {
+    const available = availableOutfitsFor(selectedOnboardAnimal);
+    if (!selectedOnboardOutfit || comboIsTaken(selectedOnboardAnimal, selectedOnboardOutfit)) {
+      selectedOnboardOutfit = available[0]?.id || null;
+    }
+  }
+
+  renderOnboardAnimals();
+  renderOnboardOutfits();
+  renderOnboardSummary();
+  updateOnboardingNameUI();
+}
+
+function renderOnboardAnimals() {
   const picker = $('#animalPicker');
   if (!picker) return;
   picker.innerHTML = ANIMALS.map((animal) => {
-    const claimed = onboardClaimed.has(animal.id);
+    const available = availableOutfitsFor(animal.id);
+    const full = available.length === 0;
     const selected = selectedOnboardAnimal === animal.id;
     return `
-      <button class="animal-choice${selected ? ' is-selected' : ''}" type="button" data-animal="${animal.id}" ${claimed ? 'disabled aria-label="' + esc(animal.name) + '，已经被领走"' : `aria-label="${esc(animal.name)}，${esc(animal.vibe)}"`}>
+      <button class="animal-choice${selected ? ' is-selected' : ''}${full ? ' is-full' : ''}" type="button" data-animal="${animal.id}" ${full ? 'disabled' : ''} aria-label="${esc(animal.name)}${full ? '，装扮已经全部被领走' : `，还有 ${available.length} 套装扮可选`}">
         <em>${animal.emoji}</em>
         <span>${esc(animal.name)}</span>
-        ${claimed ? '<i class="claimed-tag">已领</i>' : ''}
+        <i class="claimed-tag">${full ? '已满' : `${available.length}/8`}</i>
       </button>
     `;
   }).join('');
-
   const claimInfo = $('#animalClaimInfo');
-  if (claimInfo) claimInfo.textContent = `已领走 ${onboardClaimed.size} / ${ANIMALS.length}`;
-  updateOnboardingPreview();
+  if (claimInfo) claimInfo.textContent = sharedTree
+    ? `已经被领走 ${onboardingTotalClaimed()} 套形象`
+    : '正在同步公共树…';
 }
 
-function updateOnboardingPreview() {
-  const preview = $('#onboardPreview');
-  const picked = $('#onboardPicked');
-  const submit = $('#onboardSubmit');
-  const name = $('#onboardName').value.trim();
-  if (selectedOnboardAnimal) {
-    const animal = getAnimal(selectedOnboardAnimal);
-    if (preview) {
-      const emoji = $('span', preview);
-      const label = $('i', preview);
-      if (emoji) {
-        emoji.textContent = animal.emoji;
-        emoji.classList.remove('is-claimed');
-      }
-      if (label) label.textContent = `${animal.name} · 只属于你`;
-    }
-    if (picked) {
-      picked.innerHTML = `<span>${esc(animal.emoji)} ${esc(animal.name)}</span><small>${esc(animal.vibe)}</small>`;
-    }
-  } else {
-    if (preview) {
-      const emoji = $('span', preview);
-      const label = $('i', preview);
-      if (emoji) emoji.textContent = '🦊';
-      if (label) label.textContent = '你的小动物';
-    }
-    if (picked) picked.innerHTML = '<span>还没有选择</span><small>挑一只喜欢的吧</small>';
+function renderOnboardOutfits() {
+  const picker = $('#outfitPicker');
+  if (!picker) return;
+  if (!selectedOnboardAnimal) {
+    picker.innerHTML = '';
+    return;
   }
-  if (submit) submit.disabled = !name || !selectedOnboardAnimal;
+  picker.innerHTML = OUTFITS.map((outfit) => {
+    const taken = comboIsTaken(selectedOnboardAnimal, outfit.id);
+    const selected = selectedOnboardOutfit === outfit.id;
+    return `
+      <button class="outfit-choice${selected ? ' is-selected' : ''}${taken ? ' is-taken' : ''}" type="button" data-outfit="${outfit.id}" ${taken ? 'disabled' : ''} aria-label="${esc(outfit.name)}${taken ? '，已经被领走' : ''}">
+        <span class="outfit-choice-art">${avatarMarkup(selectedOnboardAnimal, outfit.id, { size: 54 })}</span>
+        <span class="outfit-choice-name">${esc(outfit.name)}</span>
+        <small>${taken ? '已领走' : '可选'}</small>
+      </button>
+    `;
+  }).join('');
+  const info = $('#outfitClaimInfo');
+  if (info) info.textContent = `${availableOutfitsFor(selectedOnboardAnimal).length} / 8 套装扮可选`;
+}
+
+function renderOnboardSummary() {
+  const picked = $('#onboardPicked');
+  const preview = $('#onboardPreview');
+  const animal = selectedOnboardAnimal ? getAnimal(selectedOnboardAnimal) : null;
+  const outfit = selectedOnboardOutfit ? getOutfit(selectedOnboardOutfit) : null;
+  if (picked) {
+    if (animal && outfit) {
+      picked.innerHTML = `<span>${avatarMarkup(animal.id, outfit.id, { size: 52 })}</span><span><strong>${esc(animal.name)} · ${esc(outfit.name)}</strong><small>${esc(animal.vibe)}</small></span>`;
+    } else if (animal) {
+      picked.innerHTML = `<span>${esc(animal.emoji)}</span><span><strong>${esc(animal.name)}</strong><small>再挑一套装扮</small></span>`;
+    } else {
+      picked.innerHTML = '<span>还没有选择</span><small>先挑一只小动物吧</small>';
+    }
+  }
+  if (preview) {
+    if (animal) {
+      preview.innerHTML = `${avatarMarkup(animal.id, outfit?.id || 'santa', { size: 112 })}<i>${esc(animal.name)}${outfit ? ` · ${esc(outfit.name)}` : ''}</i>`;
+    } else {
+      preview.innerHTML = '<span class="onboard-preview-ghost">?</span><i>你的小动物</i>';
+    }
+  }
+}
+
+function updateOnboardingNameUI() {
+  const input = $('#onboardName');
+  const hint = $('#onboardNameHint');
+  const submit = $('#onboardSubmit');
+  const next = $('#onboardNext');
+  if (!input) return;
+  const name = input.value.trim();
+  const problem = name ? nameProblem(name) : '';
+  if (hint) {
+    hint.textContent = problem || (name ? '这个名字可以用' : '2–12 个字，全站只能有一个人用');
+    hint.classList.toggle('is-bad', Boolean(problem));
+    hint.classList.toggle('is-ok', Boolean(name && !problem));
+  }
+  if (next) next.disabled = !name || Boolean(problem) || !selectedOnboardAnimal;
+  if (submit) submit.disabled = !name || Boolean(problem) || !selectedOnboardAnimal || !selectedOnboardOutfit;
+  renderOnboardSummary();
 }
 
 function selectOnboardAnimal(animalId) {
-  if (!ANIMAL_MAP.has(animalId) || onboardClaimed.has(animalId)) return;
-  selectedOnboardAnimal = selectedOnboardAnimal === animalId ? null : animalId;
+  if (!ANIMAL_MAP.has(animalId)) return;
+  if (!availableOutfitsFor(animalId).length) {
+    showToast('这只小动物的 8 套装扮都已经被领走了，换一只吧', '❄️');
+    return;
+  }
+  selectedOnboardAnimal = animalId;
+  selectedOnboardOutfit = null;
+  const available = availableOutfitsFor(animalId);
+  if (onboardStep === 2) selectedOnboardOutfit = available[0]?.id || null;
   playPop();
-  renderOnboardingPicker();
+  renderOnboarding();
 }
 
-function submitOnboarding() {
-  const nameInput = $('#onboardName');
-  const name = nameInput.value.trim();
-  const submit = $('#onboardSubmit');
-  if (!name) {
-    showToast('先告诉我们怎么称呼你吧', '✦');
-    nameInput.focus();
+function selectOnboardOutfit(outfitId) {
+  if (!OUTFIT_MAP.has(outfitId) || !selectedOnboardAnimal) return;
+  if (comboIsTaken(selectedOnboardAnimal, outfitId)) {
+    showToast('这套装扮刚刚被领走了，换一套吧', '❄️');
+    renderOnboarding();
+    return;
+  }
+  selectedOnboardOutfit = outfitId;
+  playPop();
+  renderOnboarding();
+}
+
+function goOnboardingStep2() {
+  const input = $('#onboardName');
+  const name = input?.value.trim() || '';
+  const problem = nameProblem(name);
+  if (!name || problem) {
+    showToast(problem || '先写下你的名字吧', '✍️');
+    input?.focus();
     return;
   }
   if (!selectedOnboardAnimal) {
     showToast('挑一只只属于你的小动物', '🐾');
     return;
   }
-  if (onboardClaimed.has(selectedOnboardAnimal)) {
-    showToast('这只小动物刚刚被别人领走了，换一只吧', '❄️');
-    selectedOnboardAnimal = null;
-    onboardClaimed = claimedForOnboarding();
-    renderOnboardingPicker();
+  const available = availableOutfitsFor(selectedOnboardAnimal);
+  if (!available.length) {
+    showToast('这只小动物的装扮都被领走了，换一只吧', '❄️');
+    return;
+  }
+  selectedOnboardOutfit = selectedOnboardOutfit && !comboIsTaken(selectedOnboardAnimal, selectedOnboardOutfit)
+    ? selectedOnboardOutfit
+    : available[0].id;
+  onboardStep = 2;
+  playPop();
+  renderOnboarding();
+}
+
+function backOnboardingStep1() {
+  onboardStep = 1;
+  renderOnboarding();
+}
+
+async function submitOnboarding() {
+  const input = $('#onboardName');
+  const name = input?.value.trim() || '';
+  const problem = nameProblem(name);
+  if (!name || problem) {
+    showToast(problem || '先写下你的名字吧', '✍️');
+    return;
+  }
+  if (!selectedOnboardAnimal || !selectedOnboardOutfit) {
+    showToast('还差一只小动物或一套装扮', '🎁');
+    return;
+  }
+  if (comboIsTaken(selectedOnboardAnimal, selectedOnboardOutfit)) {
+    showToast('这套形象刚刚被领走了，换一套吧', '❄️');
+    renderOnboarding();
     return;
   }
 
-  state.profile = { name: name.slice(0, 12), animalId: selectedOnboardAnimal };
-  state.tree = normalizeTree(state.tree, state.profile);
+  const chosenName = name;
+  const chosenAnimal = selectedOnboardAnimal;
+  const chosenOutfit = selectedOnboardOutfit;
+  const button = $('#onboardSubmit');
+  const original = button.innerHTML;
+  button.disabled = true;
+  button.innerHTML = '<span>正在把名字挂上公共树…</span>';
+
+  try {
+    await remote.waitReady(7000);
+  } catch (error) {
+    button.disabled = false;
+    button.innerHTML = original;
+    showToast('公共圣诞树暂时没有连上，稍后再试一次', '📡');
+    return;
+  }
+
+  const accountId = state.profile?.id || makeAccountId();
+  const outcome = await remote.mutate((draft) => {
+    const existing = draft.users[accountId];
+    if (existing?.banned) return { error: 'banned' };
+    if (sharedNameConflict(draft, chosenName, accountId)) return { error: 'name-taken' };
+    if (sharedComboConflict(draft, chosenAnimal, chosenOutfit, accountId)) return { error: 'combo-taken' };
+    const now = Date.now();
+    draft.users[accountId] = Object.assign({}, existing || {}, {
+      id: accountId,
+      name: chosenName,
+      nameKey: nameKey(chosenName),
+      animal: chosenAnimal,
+      outfit: chosenOutfit,
+      createdAt: existing?.createdAt || now,
+      onTree: Boolean(existing?.onTree),
+      treeAt: existing?.treeAt || null,
+      sendCount: existing?.sendCount || 0,
+      lastSendAt: existing?.lastSendAt || null,
+      banned: false,
+      hidden: false,
+      banReason: '',
+      bannedAt: null
+    });
+    return { ok: true };
+  });
+
+  button.disabled = false;
+  button.innerHTML = original;
+
+  if (outcome.error === 'name-taken') {
+    showToast('这个名字刚刚被别人领走了，换一个吧', '❄️');
+    onboardStep = 1;
+    renderOnboarding();
+    $('#onboardName')?.focus();
+    return;
+  }
+  if (outcome.error === 'combo-taken') {
+    showToast('这套形象刚刚被领走了，换一套吧', '❄️');
+    renderOnboarding();
+    return;
+  }
+  if (outcome.error === 'banned') {
+    showToast('这个账号已经被管理员限制，不能再加入', '🚫');
+    return;
+  }
+  if (outcome.error) {
+    showToast('公共树好像没接住你，再试一次吧', '📡');
+    return;
+  }
+
+  state.profile = {
+    id: accountId,
+    name: chosenName,
+    animalId: chosenAnimal,
+    outfitId: chosenOutfit
+  };
+  state.tree = [];
   saveState();
 
   if (inviteHost) mergeInviteTree();
   const gotGift = pendingGift ? importSharedGift(pendingGift) : false;
   pendingGift = null;
 
-  const overlay = $('#onboarding');
-  overlay.hidden = true;
+  closeOnboarding();
   $('#app').hidden = false;
-  document.body.classList.remove('is-locked');
-
   renderAll();
   updateSoundButton();
   playJingle();
@@ -1197,7 +1632,7 @@ function submitOnboarding() {
     }, 500);
   } else {
     showRoute('home', { instant: true });
-    showToast(`欢迎 ${state.profile.name}，${getAnimal(state.profile.animalId).name} 已经在树上了`, '🎄');
+    showToast(`欢迎 ${name}，送出一份礼物后，你就会出现在公共圣诞树上`, '🎄');
   }
 
   if (location.hash.includes('gift=')) {
@@ -1209,12 +1644,7 @@ function submitOnboarding() {
    11. Tree
    ------------------------------------------------------------ */
 
-let selectedTrayAnimal = null;
 let newOrnamentId = null;
-
-function treeEntriesSorted() {
-  return state.tree.slice().sort((a, b) => a.slot - b.slot);
-}
 
 function isAnimalClaimed(animalId) {
   return state.tree.some((entry) => entry.animalId === animalId)
@@ -1259,133 +1689,140 @@ function mergeInviteTree() {
   saveState();
 }
 
-function renderTree() {
-  if (!state.profile) return;
-  const entries = treeEntriesSorted();
-  const own = entries.find((entry) => entry.isMe) || entries.find((entry) => entry.animalId === state.profile.animalId);
-  const ownAnimal = getAnimal(state.profile.animalId);
+function treeMyState() {
+  const me = mySharedUser();
+  if (!state.profile) return { kind: 'guest' };
+  if (!me) return { kind: 'unclaimed' };
+  if (me.banned) return { kind: 'banned', user: me };
+  if (me.hidden) return { kind: 'hidden', user: me };
+  if (me.onTree) return { kind: 'on-tree', user: me };
+  return { kind: 'ready', user: me };
+}
 
-  $('#myAnimalEmoji').textContent = ownAnimal.emoji;
-  $('#myAnimalName').textContent = ownAnimal.name;
-  $('#myAnimalVibe').textContent = ownAnimal.vibe;
-  $('#myAnimalCard').querySelector('.my-animal-orb').style.setProperty('--orb', ownAnimal.orb);
+function renderTree() {
+  const users = publicTreeUsers();
+  const me = mySharedUser();
+  const stateInfo = treeMyState();
+  const avatarRoot = $('#myAnimalAvatar');
+  const statusBadge = $('#myAnimalStatus');
+  const action = $('#treeActionBtn');
+
+  if (avatarRoot) {
+    avatarRoot.innerHTML = state.profile
+      ? avatarMarkup(state.profile.animalId, state.profile.outfitId, { size: 84 })
+      : '<span class="my-animal-ghost">?</span>';
+  }
+  if (statusBadge) {
+    statusBadge.textContent = stateInfo.kind === 'guest'
+      ? 'GUEST'
+      : stateInfo.kind === 'banned'
+        ? 'RESTRICTED'
+        : stateInfo.kind === 'hidden'
+          ? 'HIDDEN'
+          : stateInfo.kind === 'on-tree'
+            ? 'ON TREE'
+            : 'READY';
+  }
+  if (state.profile) {
+    const animal = getAnimal(state.profile.animalId);
+    $('#myAnimalName').textContent = state.profile.name;
+    $('#myAnimalVibe').textContent = animal.vibe;
+    const outfit = getOutfit(state.profile.outfitId);
+    $('#myAnimalOutfit').textContent = `${animal.name} · ${outfit.name}`;
+    if (stateInfo.kind === 'banned') {
+      $('#myAnimalNote').textContent = `这个账号已经被管理员移出圣诞夜。${me.banReason ? `原因：${me.banReason}` : ''}`;
+    } else if (stateInfo.kind === 'hidden') {
+      $('#myAnimalNote').textContent = '管理员暂时把你的形象从公共树上取下了；你仍然可以送礼物，但不会显示在树上。';
+    } else if (stateInfo.kind === 'on-tree') {
+      $('#myAnimalNote').textContent = `你的形象已经挂在公共树上了，今晚送出 ${me.sendCount} 份礼物。`;
+    } else {
+      $('#myAnimalNote').textContent = '形象已经准备好了。送出第一份礼物后，你就会出现在这棵公共圣诞树上。';
+    }
+    if (action) {
+      action.innerHTML = stateInfo.kind === 'banned'
+        ? '<span>查看规则</span><svg><use href="#i-heart"/></svg>'
+        : stateInfo.kind === 'hidden'
+          ? '<span>继续送礼物</span><svg><use href="#i-gift"/></svg>'
+          : stateInfo.kind === 'on-tree'
+            ? '<span>再送一份礼物</span><svg><use href="#i-gift"/></svg>'
+            : '<span>去送第一份礼物</span><svg><use href="#i-arrow"/></svg>';
+      action.dataset.treeAction = stateInfo.kind === 'banned' ? 'rules' : 'gift';
+    }
+  } else {
+    $('#myAnimalName').textContent = '还没加入';
+    $('#myAnimalVibe').textContent = '先领一只小动物，再送出第一份礼物。';
+    $('#myAnimalOutfit').textContent = '形象 + 装扮，只属于一个人';
+    $('#myAnimalNote').textContent = '加入后，你的动物和装扮会被保留；送出礼物后才会出现在公共圣诞树上。';
+    if (action) {
+      action.innerHTML = '<span>加入圣诞夜</span><svg><use href="#i-arrow"/></svg>';
+      action.dataset.treeAction = 'join';
+    }
+  }
 
   const ornamentRoot = $('#treeOrnaments');
-  ornamentRoot.innerHTML = entries.map((entry) => {
-    const animal = getAnimal(entry.animalId);
-    const slot = TREE_SLOTS[entry.slot] || TREE_SLOTS[0];
-    const delay = `-${(entry.slot % 7) * 0.45}s`;
-    return `
-      <button class="ornament${entry.isMe ? ' is-me' : ''}${newOrnamentId === entry.id ? ' is-new' : ''}" type="button"
-        data-ornament="${entry.id}"
-        style="--x:${slot.x}%;--y:${slot.y}%;--sway-delay:${delay};--orb:${animal.orb};--orb-dark:${animal.orbDark};--bow:${animal.bow};--rim:#ffe7bb"
-        aria-label="${esc(entry.name)}的小动物：${esc(animal.name)}">
-        <span class="ornament-string"></span>
-        <span class="ornament-bauble">${animal.emoji}${entry.isMe ? '<i class="ornament-me-badge">YOU</i>' : ''}</span>
-        <span class="ornament-label">${esc(entry.name)}</span>
-      </button>
-    `;
-  }).join('');
-
-  $('#treeEmptyNote').hidden = entries.length > 0;
-  $('#treeFootCount').textContent = String(entries.length);
-  $('#treeStampCount').textContent = String(entries.length).padStart(2, '0');
-  $('#ornamentListCount').textContent = `${entries.length} / ${MAX_TREE_SLOTS}`;
-
-  const list = $('#ornamentList');
-  list.innerHTML = entries.length
-    ? entries.map((entry) => {
-      const animal = getAnimal(entry.animalId);
+  if (ornamentRoot) {
+    const max = Math.min(users.length, TREE_SLOTS.length);
+    ornamentRoot.innerHTML = users.slice(0, max).map((user, index) => {
+      const slot = TREE_SLOTS[index] || TREE_SLOTS[0];
+      const isMe = Boolean(state.profile && user.id === state.profile.id);
       return `
-        <div class="ornament-list-row${entry.isMe ? ' is-me' : ''}">
-          <span>${animal.emoji}</span>
-          <strong>${esc(entry.name)}</strong>
-          <small>${entry.isMe ? 'YOU' : esc(animal.name)}</small>
-        </div>
+        <button class="ornament${isMe ? ' is-me' : ''}${newOrnamentId === user.id ? ' is-new' : ''}" type="button"
+          data-ornament="${esc(user.id)}"
+          style="--x:${slot.x}%;--y:${slot.y}%;--delay:-${(index % 7) * 0.4}s"
+          aria-label="${esc(user.name)}，${esc(getAnimal(user.animal).name)}，${esc(getOutfit(user.outfit).name)}">
+          <span class="ornament-string"></span>
+          <span class="ornament-avatar">${avatarMarkup(user.animal, user.outfit, { size: 58 })}${isMe ? '<i class="ornament-me-badge">YOU</i>' : ''}</span>
+          <span class="ornament-label">${esc(user.name)}</span>
+        </button>
       `;
-    }).join('')
-    : '<p class="ornament-list-empty">树上还空着，挑一只小动物挂上去吧。</p>';
+    }).join('');
+  }
 
-  renderAnimalTray();
+  $('#treeEmptyNote').hidden = users.length > 0;
+  $('#treeFootCount').textContent = String(users.length);
+  $('#treeStampCount').textContent = String(users.length).padStart(2, '0');
+  $('#ornamentListCount').textContent = String(users.length);
+  const list = $('#ornamentList');
+  if (list) {
+    list.innerHTML = users.length
+      ? users.map((user) => `
+        <div class="ornament-list-row${state.profile && user.id === state.profile.id ? ' is-me' : ''}" data-home-person="${esc(user.id)}">
+          ${avatarMarkup(user.animal, user.outfit, { size: 34 })}
+          <strong>${esc(user.name)}</strong>
+          <small>${esc(getOutfit(user.outfit).name)}</small>
+        </div>
+      `).join('')
+      : '<p class="ornament-list-empty">树上还空着。第一份礼物送出后，第一只小动物就会在这里亮起来。</p>';
+  }
+
   updateStats();
   newOrnamentId = null;
 }
 
-function renderAnimalTray() {
-  const tray = $('#animalTray');
-  if (!tray) return;
-  tray.innerHTML = ANIMALS.map((animal) => {
-    const claimed = isAnimalClaimed(animal.id);
-    const selected = selectedTrayAnimal === animal.id;
-    return `
-      <button class="tray-animal${selected ? ' is-selected' : ''}" type="button" data-tray-animal="${animal.id}"
-        ${claimed ? 'disabled' : ''}
-        title="${claimed ? `${esc(animal.name)}已经被领走` : esc(animal.name)}"
-        aria-label="${esc(animal.name)}${claimed ? '，已经被领走' : ''}">
-        ${animal.emoji}
-      </button>
-    `;
-  }).join('');
-  const hint = $('#hangHint');
-  if (hint) {
-    hint.textContent = selectedTrayAnimal
-      ? `已选择 ${getAnimal(selectedTrayAnimal).name}`
-      : '挑一只小动物';
-  }
-}
-
-function handleHangSubmit(event) {
-  event.preventDefault();
-  const nameInput = $('#hangName');
-  const name = nameInput.value.trim();
-  if (!name) {
-    showToast('先写下这位访客的名字吧', '✍️');
-    nameInput.focus();
+function openOrnamentModal(userId) {
+  const user = sharedTree?.users?.[userId];
+  if (!user) {
+    showToast('这个小动物还没回到树上，稍后再看看', '❄️');
     return;
   }
-  if (!selectedTrayAnimal) {
-    showToast('还没挑小动物呢', '🐾');
-    return;
-  }
-  if (state.tree.length >= MAX_TREE_SLOTS) {
-    showToast('树梢已经挂满啦，今晚的星星刚刚好', '🌟');
-    return;
-  }
-  const entry = addTreeEntry(selectedTrayAnimal, name);
-  if (!entry) {
-    showToast('这只小动物已经被领走了，换一只吧', '❄️');
-    selectedTrayAnimal = null;
-    renderTree();
-    return;
-  }
-  newOrnamentId = entry.id;
-  nameInput.value = '';
-  selectedTrayAnimal = null;
-  playBell();
-  renderTree();
-  updateStats();
-  burstConfetti(24, { x: window.innerWidth * 0.5, y: window.innerHeight * 0.45 });
-  showToast(`${entry.name} 的 ${getAnimal(entry.animalId).name} 已经挂上树啦`, '🎄');
-}
-
-function openOrnamentModal(entryId) {
-  const entry = state.tree.find((item) => item.id === entryId);
-  if (!entry) return;
-  const animal = getAnimal(entry.animalId);
+  const animal = getAnimal(user.animal);
+  const outfit = getOutfit(user.outfit);
+  const isMe = Boolean(state.profile && user.id === state.profile.id);
   openModal(`
-    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="ornamentTitle">
+    <div class="modal-card ornament-modal" role="dialog" aria-modal="true" aria-labelledby="ornamentTitle">
       <button class="modal-close" type="button" data-modal-close aria-label="关闭">${icon('close')}</button>
       <span class="kicker">A LITTLE ONE ON THE TREE</span>
-      <div style="display:flex;align-items:center;gap:14px;margin:10px 0 14px">
-        <div style="display:grid;place-items:center;width:70px;height:70px;border:2px solid #ead1a9;border-radius:50%;background:#fffaf0;font-size:35px">${animal.emoji}</div>
+      <div class="ornament-modal-head">
+        <span class="ornament-modal-avatar">${avatarMarkup(user.animal, user.outfit, { size: 92 })}</span>
         <div>
-          <h3 id="ornamentTitle" style="margin:0 0 3px">${esc(entry.name)}</h3>
-          <p style="margin:0">${esc(animal.name)} · ${esc(animal.vibe)}</p>
+          <h3 id="ornamentTitle">${esc(user.name)}</h3>
+          <p>${esc(animal.name)} · ${esc(outfit.name)}</p>
+          <small>${user.onTree ? `${formatShortDate(user.treeAt)} 上树 · 送出 ${user.sendCount} 份礼物` : '还没有上树'}</small>
         </div>
       </div>
-      <p>${entry.isMe ? '这是你的小动物。独一无二，已经稳稳地挂在圣诞树上。' : `这是 ${esc(entry.name)} 的小动物。每位访客的小动物都只有一次出现的机会。`}</p>
+      <p>${isMe ? '这是你的小动物。它会和新朋友一起，把这棵树慢慢点亮。' : `这是 ${esc(user.name)} 的圣诞形象。每个动物 + 装扮只属于一个人。`}</p>
       <div class="modal-actions">
-        ${entry.isMe ? '' : `<button class="btn btn-ghost" type="button" data-remove-ornament="${esc(entry.id)}" style="color:#8d3538;border-color:#e4c4a0;background:#fffaf0">${icon('close')}取下</button>`}
+        ${isMe ? '' : '<button class="btn btn-ghost" type="button" data-report-user="' + esc(user.id) + '">举报这个形象</button>'}
         <button class="btn btn-primary" type="button" data-modal-close>${icon('check')}知道啦</button>
       </div>
     </div>
@@ -1393,15 +1830,51 @@ function openOrnamentModal(entryId) {
   playBell();
 }
 
-function removeOrnament(entryId) {
-  const entry = state.tree.find((item) => item.id === entryId);
-  if (!entry || entry.isMe) return;
-  state.tree = state.tree.filter((item) => item.id !== entryId);
-  saveState();
+function openReportModal(userId) {
+  const user = sharedTree?.users?.[userId];
+  if (!user) return;
+  openModal(`
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
+      <button class="modal-close" type="button" data-modal-close aria-label="关闭">${icon('close')}</button>
+      <span class="kicker">KEEP THE TREE KIND</span>
+      <h3 id="reportTitle">举报 ${esc(user.name)}</h3>
+      <p>如果是名字、形象或行为让人不舒服，可以告诉管理员。只有管理员能看到举报内容。</p>
+      <label class="field"><span class="field-label">发生了什么？</span>
+        <select id="reportReason">
+          <option value="名字或内容不合适">名字或内容不合适</option>
+          <option value="冒充别人">冒充别人</option>
+          <option value="刷屏或捣乱">刷屏或捣乱</option>
+          <option value="其他">其他</option>
+        </select>
+      </label>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" type="button" data-modal-close style="color:#5d4434;border-color:#d9bc94;background:#fffaf0">先不举报</button>
+        <button class="btn btn-danger" type="button" data-submit-report="${esc(user.id)}">提交给管理员</button>
+      </div>
+    </div>
+  `);
+}
+
+async function submitReport(userId) {
+  const reason = $('#reportReason')?.value || '其他';
+  const outcome = await remote.mutate((draft) => {
+    if (!draft.users[userId]) return { error: 'missing' };
+    draft.reports.push({
+      id: uid('report'),
+      userId,
+      reason,
+      at: Date.now(),
+      status: 'open'
+    });
+    if (draft.reports.length > 80) draft.reports = draft.reports.slice(-80);
+    return { ok: true };
+  });
+  if (outcome.error) {
+    showToast('举报没有送出去，稍后再试一次', '📡');
+    return;
+  }
   closeModal();
-  renderTree();
-  updateStats();
-  showToast(`${entry.name} 的小动物已经从树上取下来啦`, '❄️');
+  showToast('已经告诉管理员啦，谢谢你一起照看这棵树', '🤍');
 }
 
 /* ------------------------------------------------------------
@@ -1585,7 +2058,15 @@ async function copyGiftLink(gift) {
 
 async function handleGiftSubmit(event) {
   event.preventDefault();
-  if (!state.profile) return;
+  if (!state.profile) {
+    showToast('先领一只小动物，才能把礼物交给圣诞老人', '🎄');
+    openOnboarding({ forced: true });
+    return;
+  }
+  if (mySharedUser()?.banned) {
+    showToast('这个账号已经被管理员限制，不能再送出公共礼物', '🚫');
+    return;
+  }
   const toInput = $('#giftTo');
   const messageInput = $('#giftMessage');
   const fromInput = $('#giftFrom');
@@ -1631,6 +2112,7 @@ async function handleGiftSubmit(event) {
   runSantaDelivery(() => {
     state.gifts.push(gift);
     saveState();
+    recordGiftOnTree();
     renderGiftWall();
     updateStats();
     burstConfetti(46, { x: window.innerWidth * 0.62, y: window.innerHeight * 0.35 });
@@ -2172,6 +2654,12 @@ async function copyInviteLink() {
   showToast(success ? '挑战链接已复制，快发给 TA 吧' : '复制失败了，请手动选中链接复制', success ? '🔗' : '❄️');
 }
 
+async function copyTreeLink() {
+  const link = `${location.origin}${location.pathname}`;
+  const success = await copyText(link);
+  showToast(success ? '公共圣诞树链接已复制，发给下一位朋友吧' : '复制失败了，请手动复制地址栏链接', success ? '🎄' : '❄️');
+}
+
 async function copyQuizResult() {
   if (!quiz.result || !quiz.host) return;
   const text = `我和 ${quiz.host.name} 的圣诞默契度是 ${quiz.result.score}%！${scoreComment(quiz.result.score)} 🎄`;
@@ -2312,6 +2800,7 @@ function renderAll() {
   updateHeader();
   updateStats();
   renderHeroAnimal();
+  renderHomeTree();
   renderGiftTypes();
   renderGiftWall();
 
@@ -2331,6 +2820,11 @@ function finishAppBoot() {
   $('#app').hidden = false;
   renderAll();
   const incoming = readHash();
+  if (!state.profile && (incoming.gift || incoming.invite)) {
+    showRoute('home', { instant: true });
+    openOnboarding({ forced: true });
+    return;
+  }
   if (incoming.gift || incoming.invite) {
     applyIncomingHash({ route: false });
     if (incoming.gift) {
@@ -2373,9 +2867,21 @@ function bindEvents() {
       return;
     }
 
+    const joinTreeButton = event.target.closest('[data-join-tree]');
+    if (joinTreeButton) {
+      openOnboarding({ forced: true });
+      return;
+    }
+
     const shareTreeButton = event.target.closest('[data-share-tree]');
     if (shareTreeButton) {
-      copyInviteLink();
+      copyTreeLink();
+      return;
+    }
+
+    const homePerson = event.target.closest('[data-home-person]');
+    if (homePerson) {
+      openOrnamentModal(homePerson.dataset.homePerson);
       return;
     }
 
@@ -2393,8 +2899,15 @@ function bindEvents() {
   });
 
   $('#profileChip').addEventListener('click', () => {
+    if (!state.profile) {
+      openOnboarding();
+      return;
+    }
     showRoute('tree');
-    showToast(`你的 ${getAnimal(state.profile.animalId).name} 正在树上等你`, '🐾');
+    const me = mySharedUser();
+    showToast(me?.onTree
+      ? `你的 ${getAnimal(state.profile.animalId).name} 正在公共树上等你`
+      : '送出一份礼物后，你就会出现在公共树上', '🐾');
   });
 
   // Onboarding
@@ -2402,14 +2915,23 @@ function bindEvents() {
     const button = event.target.closest('[data-animal]');
     if (button && !button.disabled) selectOnboardAnimal(button.dataset.animal);
   });
-  $('#onboardName').addEventListener('input', updateOnboardingPreview);
-  $('#onboardName').addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      if (!$('#onboardSubmit').disabled) submitOnboarding();
-    }
+  $('#outfitPicker').addEventListener('click', (event) => {
+    const button = event.target.closest('[data-outfit]');
+    if (button && !button.disabled) selectOnboardOutfit(button.dataset.outfit);
   });
+  $('#onboardName').addEventListener('input', updateOnboardingNameUI);
+  $('#onboardName').addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter') return;
+    event.preventDefault();
+    if (onboardStep === 1) goOnboardingStep2();
+    else if (!$('#onboardSubmit').disabled) submitOnboarding();
+  });
+  $('#onboardNext').addEventListener('click', goOnboardingStep2);
+  $('#onboardBack').addEventListener('click', backOnboardingStep1);
   $('#onboardSubmit').addEventListener('click', submitOnboarding);
+  $('#onboardClose').addEventListener('click', closeOnboarding);
+  $('#onboardSkip').addEventListener('click', closeOnboarding);
+  $('.onboarding-backdrop').addEventListener('click', closeOnboarding);
 
   // Gift form
   $('#giftForm').addEventListener('submit', handleGiftSubmit);
@@ -2449,20 +2971,17 @@ function bindEvents() {
     const ornament = event.target.closest('[data-ornament]');
     if (ornament) openOrnamentModal(ornament.dataset.ornament);
   });
-  $('#ornamentList').addEventListener('click', (event) => {
-    const row = event.target.closest('.ornament-list-row');
-    if (!row) return;
-    const name = $('strong', row)?.textContent;
-    if (name) showToast(`${name} 的小动物正在树上闪闪发光`, '✨');
+  $('#treeActionBtn').addEventListener('click', () => {
+    const action = $('#treeActionBtn').dataset.treeAction;
+    if (action === 'join') {
+      openOnboarding({ forced: true });
+    } else if (action === 'gift') {
+      showRoute('gifts');
+    } else {
+      const me = mySharedUser();
+      showToast(me?.banReason ? `账号受限：${me.banReason}` : '先看看树上的规则，再送出一份礼物吧', '🌙');
+    }
   });
-  $('#animalTray').addEventListener('click', (event) => {
-    const button = event.target.closest('[data-tray-animal]');
-    if (!button || button.disabled) return;
-    selectedTrayAnimal = selectedTrayAnimal === button.dataset.trayAnimal ? null : button.dataset.trayAnimal;
-    playPop();
-    renderAnimalTray();
-  });
-  $('#hangForm').addEventListener('submit', handleHangSubmit);
   $('#shakeTree').addEventListener('click', () => {
     const stage = $('#treeStage');
     stage.classList.remove('is-shaking');
@@ -2503,28 +3022,29 @@ function bindEvents() {
       return;
     }
     if (event.target.closest('#confirmReset')) {
-      try {
-        localStorage.removeItem(STORE_KEY);
-      } catch (error) {
-        // ignore
-      }
-      location.hash = '';
-      location.reload();
+      resetStory();
       return;
     }
-    const removeButton = event.target.closest('[data-remove-ornament]');
-    if (removeButton) removeOrnament(removeButton.dataset.removeOrnament);
+    const reportButton = event.target.closest('[data-report-user]');
+    if (reportButton) {
+      openReportModal(reportButton.dataset.reportUser);
+      return;
+    }
+    const submitReportButton = event.target.closest('[data-submit-report]');
+    if (submitReportButton) {
+      submitReport(submitReportButton.dataset.submitReport);
+    }
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      if (!$('#modalRoot').hidden) closeModal();
-    }
+    if (event.key !== 'Escape') return;
+    if (!$('#modalRoot').hidden) closeModal();
+    else if (!$('#onboarding').hidden) closeOnboarding();
   });
 
   window.addEventListener('hashchange', () => {
-    if (!state.profile) return;
     const incoming = readHash();
+    if (!state.profile && !incoming.invite && !incoming.gift) return;
     if (!incoming.invite && !incoming.gift) {
       inviteHost = null;
       pendingGift = null;
@@ -2550,21 +3070,18 @@ function boot() {
   inviteHost = incoming.invite || null;
   pendingGift = incoming.gift || null;
 
+  remote.connect();
+  remote.onState(handleSharedUpdate);
+
   bindEvents();
   updateSoundButton();
 
-  if (state.profile) {
-    if (inviteHost) mergeInviteTree();
-    finishAppBoot();
-  } else {
-    $('#app').hidden = true;
-    renderGiftTypes();
-    openOnboarding();
-    if (pendingGift) {
-      const copy = $('.onboard-art-copy p');
-      if (copy) copy.textContent = '「有人把一份礼物，悄悄放在了你的门口。」';
-    }
-  }
+  if (state.profile && inviteHost) mergeInviteTree();
+  finishAppBoot();
+
+  remote.waitReady(9000)
+    .then(() => syncExistingProfile())
+    .catch(() => {});
 
   // A tiny, quiet welcome for returning visitors.
   if (state.profile) {
