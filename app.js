@@ -1033,9 +1033,11 @@ function updateHeader() {
     if (emoji) emoji.textContent = '🎄';
     if (name) name.textContent = '加入圣诞夜';
     if (caption) caption.textContent = '访客';
+    chip?.classList.add('is-guest');
     chip?.setAttribute('aria-label', '加入圣诞夜');
     return;
   }
+  chip?.classList.remove('is-guest');
   const animal = getAnimal(state.profile.animalId);
   if (emoji) emoji.innerHTML = avatarMarkup(state.profile.animalId, state.profile.outfitId, { size: 30 });
   if (name) name.textContent = state.profile.name;
