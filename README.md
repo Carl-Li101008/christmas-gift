@@ -26,6 +26,7 @@ python -m http.server 8788 --bind 127.0.0.1
 - **第一次送出礼物才上树**：加入后先挑好形象；真正送出一张贺卡时，才会被记录到公共圣诞树上，送出几份都会累计。
 - **动物圣诞树**：所有送出礼物的人共享一棵树。树上的挂饰会实时更新，点开可以看动物、装扮、上树时间和送出的礼物数。
 - **默契度测试**：主人先写下 6 个答案，把邀请链接发给访客；访客猜答案后得到百分比、默契评语和逐题对照。
+- **圣诞活动 / 外国传统**：24 扇降临节日历小门，每扇门后面是一个国家的真实圣诞习俗；还有英国圣诞拉炮（纸皇冠 + 冷笑话）和秘密圣诞老人抽签器（可从公共树导入参与者）。
 - **管理台**：管理员可以查看全部人物、封禁 / 解封、暂时隐藏 / 恢复、处理举报。被举报的人物会进入待处理列表。
 - **其他**：圣诞倒计时、许愿雪球、声音开关、轻量动效开关、贺卡分享与本地持久化。
 
@@ -51,3 +52,11 @@ python -m http.server 8788 --bind 127.0.0.1
 ## 管理员口令
 
 管理员口令只以 SHA-256 哈希保存在 `admin.js` 中。需要修改时，把新口令的 SHA-256 替换 `ADMIN_HASH` 即可。管理台只适合朋友间维护，不要当作真正的权限系统。
+
+## 圣诞活动资料参考
+
+- [BBC Bitesize — Where do Advent calendars come from?](https://www.bbc.co.uk/bitesize/articles/z469ywx)
+- [Vogue — On the Undeniable Charm of British Christmas Crackers](https://www.vogue.com/article/on-the-undeniable-charm-of-british-christmas-crackers)
+- [English Intake — Christmas traditions and customs](https://englishintake.com/christmas-traditions-and-customs/)
+- [EBSCO — Christmas traditions around the world](https://www.ebsco.com/research-starters/religion-and-philosophy/christmas-traditions-around-world)
+- [Sisters on Samui — Christmas Traditions from Around the World](https://www.sistersonsamui.org/christmas-traditions-from-around-the-world/)
