@@ -46,6 +46,7 @@
     <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.3" y="5.2" width="17.4" height="15.2" rx="2.2"/><path d="M7.6 3v4.1M16.4 3v4.1M3.3 9.4h17.4M8 13h.1M12 13h.1M16 13h.1M8 16.6h.1M12 16.6h.1M16 16.6h.1"/></symbol>
     <symbol id="i-cracker" viewBox="0 0 24 24"><path d="M3 9.5c3.2-2.5 6.4-2.5 9 0-2.6 2.5-5.8 2.5-9 0ZM21 9.5c-3.2-2.5-6.4-2.5-9 0 2.6 2.5 5.8 2.5 9 0ZM3 9.5l3.2 8.2M21 9.5l-3.2 8.2M6.2 17.7l-2 2.8M17.8 17.7l2 2.8M8.6 12.8l1.4 3M15.4 12.8 14 15.8"/></symbol>
     <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8.2" r="3.1"/><path d="M3.3 20.1c.5-4.2 2.5-6.3 5.7-6.3s5.2 2.1 5.7 6.3Z"/><circle cx="17" cy="9.4" r="2.5"/><path d="M14.7 20.1c.3-3.5 1.8-5.3 4.3-5.3 2.1 0 3.5 1.5 3.9 4.2"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.4" width="14" height="10.2" rx="2.2"/><path d="M8.2 10.4V7.8a3.8 3.8 0 0 1 7.6 0v2.6M12 14.4v2.2"/></symbol>
 
     <symbol id="santa-fly" viewBox="0 0 280 210">
       <g>
@@ -324,10 +325,10 @@
         <section class="activities-teaser" aria-labelledby="activitiesTeaserTitle">
           <div class="section-head">
             <div>
-              <span class="kicker">MORE THAN A GIFT EXCHANGE</span>
-              <h2 id="activitiesTeaserTitle">外国人的圣诞夜，<em>还会做这些事。</em></h2>
+              <span class="kicker">LITTLE TRADITIONS</span>
+              <h2 id="activitiesTeaserTitle">圣诞夜，<em>还有一些小传统。</em></h2>
             </div>
-            <p>从德国开始数日子，在英国拉响纸拉炮，再抽一次秘密圣诞老人。三个小传统，把今晚拉长一点。</p>
+            <p>数日子、拉纸炮、抽名字，都是能让今晚慢下来的小事。</p>
           </div>
           <div class="activities-mini-grid">
             <button class="activity-mini" type="button" data-route="activities">
@@ -601,9 +602,9 @@
       <section class="view view-activities" data-view="activities" aria-labelledby="activitiesTitle">
         <div class="page-head">
           <div class="page-head-copy">
-            <span class="kicker">05 / TRADITIONS &amp; PARLOUR GAMES</span>
-            <h1 id="activitiesTitle">外国人的圣诞夜，<br /><em>还会做这些事。</em></h1>
-            <p>降临节日历、圣诞拉炮、秘密圣诞老人——这些不是装饰，是很多家庭每年真的会围在一起玩的环节。挑一个，今晚就试。</p>
+            <span class="kicker">05 / LITTLE CHRISTMAS TRADITIONS</span>
+            <h1 id="activitiesTitle">圣诞夜，<br /><em>还有一些小传统。</em></h1>
+            <p>数日子、拉纸炮、抽名字——几个适合在圣诞夜和家人朋友一起试的小传统。</p>
           </div>
           <div class="page-head-stamp stamp-activities" aria-hidden="true"><span>TRADITIONS</span><b>24</b><i>SMALL RITUALS</i></div>
         </div>
@@ -612,16 +613,15 @@
           <div class="activity-panel-head">
             <div>
               <span class="kicker">01 / ADVENT CALENDAR</span>
-              <h2 id="adventTitle">从 12 月 1 日，<em>数到圣诞夜。</em></h2>
+              <h2 id="adventTitle">一天一扇，<em>慢慢数到圣诞夜。</em></h2>
             </div>
             <div class="advent-tools">
               <span id="adventProgress">已打开 0 / 24</span>
-              <button class="text-link" type="button" id="resetAdvent"><svg><use href="#i-refresh"/></svg>重新数一遍</button>
             </div>
           </div>
-          <p class="activity-lead">这项传统来自 19 世纪的德国：人们用粉笔在门上画线，每天擦掉一格，等圣诞到来。后来才变成印在纸上的小门。这里可以提前偷看，每一扇门后面都是一个国家的真实习俗。</p>
+          <p class="activity-lead">这项传统来自 19 世纪的德国：人们用粉笔在门上画线，每天擦掉一格，等圣诞到来。这里的日历也一样——从 12 月 1 日起每天自动解锁一扇，不能提前打开；打开后就会一直亮着。</p>
           <div class="advent-grid" id="adventGrid" role="group" aria-label="二十四扇降临节日历小门"></div>
-          <p class="advent-note">传统上从 12 月 1 日开始，一天开一扇；这里不限制日期，随时可以翻。</p>
+          <p class="advent-note" id="adventUnlockNote">正在计算下一扇门的解锁时间…</p>
         </section>
 
         <div class="activity-split">
@@ -655,21 +655,27 @@
             <div class="activity-panel-head">
               <div>
                 <span class="kicker">03 / SECRET SANTA</span>
-                <h2 id="secretSantaTitle">抽一个名字，<em>匿名送一份礼物。</em></h2>
+                <h2 id="secretSantaTitle">抽一个名字，<em>悄悄准备礼物。</em></h2>
               </div>
               <span class="mini-badge">WORLD</span>
             </div>
-            <p class="activity-lead">在办公室、班级或家庭里很常见：每个人抽到另一个人的名字，悄悄准备一份小礼物；被抽到的人不知道是谁送的。抽签只在这台设备上进行。</p>
+            <p class="activity-lead">在办公室、班级或家庭里很常见：每个人抽到另一个人的名字，悄悄准备一份小礼物；被抽到的人不知道是谁送的。抽名字只在这台设备上进行。</p>
+            <div class="ss-howto" aria-hidden="true">
+              <span><b>01</b>列入名单</span>
+              <span><b>02</b>抽一个名字</span>
+              <span><b>03</b>按预算准备礼物</span>
+            </div>
             <form class="secret-santa-form" id="secretSantaForm">
               <label class="field"><span class="field-label">参与者 <span class="field-note">每行一个，可以写「名字 | 想要的礼物」</span></span>
                 <textarea id="ssNames" rows="4" placeholder="小满 | 想要一本小书&#10;Momo | 喜欢热可可&#10;阿团 | 随便挑"></textarea>
               </label>
               <div class="ss-options">
-                <label class="field"><span class="field-label">礼物预算</span><input id="ssBudget" maxlength="20" placeholder="例如：¥50 以内" /></label>
+                <label class="field"><span class="field-label">礼物预算（可选）</span><input id="ssBudget" maxlength="20" placeholder="例如：¥50 以内 / 不设限" /></label>
                 <button class="btn btn-ghost btn-small" type="button" id="ssImport"><svg><use href="#i-people"/></svg><span>从圣诞树导入</span></button>
               </div>
-              <button class="btn btn-primary" type="submit"><span>开始抽签</span><svg><use href="#i-arrow"/></svg></button>
+              <button class="btn btn-primary" type="submit"><span>开始抽名字</span><svg><use href="#i-arrow"/></svg></button>
             </form>
+            <p class="ss-payment-note">这里只负责分配名字，不收款。礼物由每个人自己准备和付款；如果你们要统一采购或 AA，建议在群收款里完成。</p>
             <div class="ss-result" id="ssResult" hidden></div>
           </section>
         </div>
