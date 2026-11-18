@@ -92,6 +92,51 @@ const QUIZ_QUESTIONS = [
   }
 ];
 
+const ADVENT_DAYS = [
+  { day: 1, flag: '🇩🇪', country: '德国', title: '粉笔画的降临节', text: '19 世纪的德国路德宗家庭会在门上画粉笔线，每天擦掉一格，数到圣诞。后来才出现印在纸上的小门和巧克力日历。', tryIt: '在便签上画 24 个格子，每天划掉一格。' },
+  { day: 2, flag: '🇬🇧', country: '英国', title: '圣诞拉炮', text: '伦敦的 Tom Smith 在 1840 年代把糖果包装变成会“砰”一声的纸拉炮。现在里面通常有一顶纸皇冠、一张冷笑话和一个小礼物。', tryIt: '和家人各拉一端，谁拿到纸皇冠谁负责讲笑话。' },
+  { day: 3, flag: '🌍', country: '欧美办公室', title: '秘密圣诞老人', text: '每个人抽一个名字，悄悄给那个人准备一份小礼物，不署名。它让礼物交换变得公平，也保留一点“谁送的”悬念。', tryIt: '用本页的抽签器，给群里每个人抽一个名字。' },
+  { day: 4, flag: '🇲🇽', country: '墨西哥', title: '拉斯波萨达斯', text: '12 月 16 日到 24 日，人们重演玛利亚和约瑟夫寻找住处的故事，举着蜡烛唱歌、挨家敲门，最后以派对和皮纳塔结束。', tryIt: '和朋友分两队，一队敲门唱歌，一队假装旅店老板。' },
+  { day: 5, flag: '🇸🇪', country: '瑞典', title: '圣露西亚节', text: '12 月 13 日，穿白裙、戴蜡烛皇冠的露西亚队伍唱歌送藏红花面包，把光带进一年中最黑的季节。', tryIt: '在窗边点一支蜡烛，放一首安静的圣诞歌。' },
+  { day: 6, flag: '🇵🇭', country: '菲律宾', title: 'Simbang Gabi 与星星灯', text: '菲律宾的圣诞季很长。十二月清晨有连续九天的弥撒，家家户户挂着星星形状的 parol 灯笼，象征希望与伯利恒之星。', tryIt: '用纸和竹签做一颗五角星灯，挂在窗边。' },
+  { day: 7, flag: '🇮🇸', country: '冰岛', title: '圣诞书潮', text: '冰岛有个可爱的传统：圣诞前出版大量新书，平安夜很多人会收到书，然后窝进被窝里读一整晚，配热可可。', tryIt: '给朋友挑一本书，在扉页写一句只属于你们的话。' },
+  { day: 8, flag: '🇩🇪', country: '德国', title: '圣诞市集', text: '德国的 Weihnachtsmarkt 从十一月开始，木屋摊位卖热红酒、姜饼和撒满糖粉的 Stollen 圣诞果脯面包。', tryIt: '煮一锅热红酒（或热苹果汁），加橙皮和肉桂。' },
+  { day: 9, flag: '🇯🇵', country: '日本', title: '肯德基与草莓蛋糕', text: '日本的圣诞夜有很特别的组合：炸鸡和草莓奶油蛋糕。1970 年代的广告让“圣诞吃肯德基”变成一种约定俗成。', tryIt: '今晚的晚餐，给炸鸡和蛋糕留一个位置。' },
+  { day: 10, flag: '🇵🇱', country: '波兰', title: 'Wigilia 平安夜晚餐', text: '波兰平安夜会准备十二道菜，桌下放干草，先分食薄薄的圣诞薄饼（opłatek），再开始吃饭。', tryIt: '数一数今晚桌上有几道菜，凑不齐十二道也没关系。' },
+  { day: 11, flag: '🇺🇦', country: '乌克兰', title: '蜘蛛网与 Kutia', text: '乌克兰有个传说：贫穷家庭里的蜘蛛在圣诞夜织出金网，带来好运。传统甜粥 Kutia 由小麦、蜂蜜和罂粟籽做成。', tryIt: '把一小段毛线绕成星星，夹进卡片里。' },
+  { day: 12, flag: '🇳🇴', country: '挪威', title: '藏扫帚与米布丁', text: '挪威旧传说里，圣诞夜女巫会出来借扫帚，所以人们会把扫帚藏起来。晚餐常吃藏着杏仁的米布丁，吃到的人得到杏仁糖。', tryIt: '在甜点里藏一颗坚果，看谁吃到。' },
+  { day: 13, flag: '🇨🇿', country: '捷克', title: '浴缸里的鲤鱼', text: '捷克很多家庭会在圣诞前买一条活鲤鱼，养在浴缸里，平安夜做成炸鲤鱼配土豆沙拉。', tryIt: '今晚试试一道你从未吃过的节日菜。' },
+  { day: 14, flag: '🇳🇱', country: '荷兰', title: 'Sinterklaas 与鞋子', text: '12 月 5 日是 Sinterklaas 前夜。孩子们把鞋子放在窗边，放一点胡萝卜给马，第二天会收到小礼物和姜饼。', tryIt: '在门口放一只鞋，给家人塞一张小纸条。' },
+  { day: 15, flag: '🇪🇸', country: '加泰罗尼亚', title: 'Tió de Nadal', text: '一段画着笑脸的木头盖着毯子，孩子们围着它唱歌、轻轻敲它，让它“送出”小礼物和糖果。', tryIt: '给一段木头画笑脸，盖上围巾，让它当今晚的糖果罐。' },
+  { day: 16, flag: '🇻🇪', country: '委内瑞拉', title: '滑轮去望弥撒', text: '在加拉加斯，十二月清晨人们会穿上轮滑鞋去参加圣诞弥撒，街道会为这项传统让路。', tryIt: '如果今晚出门，换一条没走过的路回家。' },
+  { day: 17, flag: '🇦🇺', country: '澳大利亚', title: '海滩上的圣诞', text: '南半球的圣诞是夏天：海滩烧烤、冷虾、户外烛光颂歌，圣诞老人有时候穿着短裤出场。', tryIt: '把热可可换成冰饮，在阳台听一首圣诞歌。' },
+  { day: 18, flag: '🇪🇹', country: '埃塞俄比亚', title: 'Ganna 与曲棍球', text: '埃塞俄比亚在 1 月 7 日庆祝 Ganna。年轻人会玩一种类似曲棍球的传统游戏，教堂里则举行通宵礼拜。', tryIt: '找一项没玩过的冬季运动，看一场比赛。' },
+  { day: 19, flag: '🇮🇹', country: '意大利', title: '女巫贝法娜与七鱼宴', text: '意大利平安夜常有“七鱼宴”；1 月 6 日主显节前夜，女巫贝法娜会骑着扫帚给好孩子送礼物。', tryIt: '给一位很久没联系的人发一句圣诞快乐。' },
+  { day: 20, flag: '🇺🇸', country: '美国', title: '饼干、牛奶与圣诞袜', text: '孩子们给圣诞老人留饼干和牛奶，给驯鹿留胡萝卜；床头挂圣诞袜，第二天早上拆礼物。NORAD 还会“追踪”圣诞老人的路线。', tryIt: '在床头挂一只袜子，明早给里面放一张小纸条。' },
+  { day: 21, flag: '🇩🇰', country: '丹麦', title: '米布丁里的杏仁', text: '丹麦的圣诞午餐 julefrokost 很长很丰盛。甜点米布丁里藏一颗杏仁，找到的人会得到一份小礼物。', tryIt: '在布丁或酸奶里藏一颗坚果，谁吃到谁许愿。' },
+  { day: 22, flag: '🇫🇮', country: '芬兰', title: '桑拿、墓地蜡烛与罗瓦涅米', text: '芬兰人会在圣诞夜蒸桑拿、去墓地给亲人点蜡烛。官方圣诞老人村就在北极圈上的罗瓦涅米。', tryIt: '给自己十分钟安静时间，点一支蜡烛。' },
+  { day: 23, flag: '🇫🇷', country: '法国', title: 'Réveillon 与树桩蛋糕', text: '法国的平安夜大餐叫 Réveillon。甜点 bûche de Noël 做成树桩形状，纪念从前放在炉火里的 Yule log。', tryIt: '把蛋糕卷成树桩形状，撒一点糖粉当雪。' },
+  { day: 24, flag: '🇬🇷', country: '希腊', title: '圣诞小船与第十二夜', text: '希腊一些岛屿会装饰圣诞小船（karavaki），而不是圣诞树。圣诞季一直延续到 1 月 6 日主显节，也就是“第十二夜”。', tryIt: '今晚把灯留到很晚，给这棵树说一句晚安。' }
+];
+
+const CRACKER_JOKES = [
+  { q: '有腹肌的雪人叫什么？', a: '腹肌雪人——Abdominal Snowman。' },
+  { q: '圣诞树为什么不擅长织毛衣？', a: '因为它总是掉针——drop needles。' },
+  { q: '驯鹿讲笑话前会说什么？', a: '“这个笑话会 sleigh 到你。”——slay / sleigh 的谐音。' },
+  { q: '雪人和吸血鬼生下的孩子叫什么？', a: '冻伤——Frostbite。' },
+  { q: '为什么圣诞老人从不迟到？', a: '因为他有“雪橇”专用道。' },
+  { q: '姜饼人去看医生说了什么？', a: '“医生，我总觉得身体里少了一块。”' },
+  { q: '哪首歌最喜欢数学？', a: '《Jingle Bells》——因为它一直在“单”数。' },
+  { q: '圣诞拉炮为什么很会社交？', a: '因为它一开口就是“砰”然心动。' }
+];
+
+const CRACKER_CROWNS = [
+  { name: '红色纸皇冠', color: '#d63c45' },
+  { name: '金色纸皇冠', color: '#d7a53f' },
+  { name: '松绿纸皇冠', color: '#2f8a65' },
+  { name: '雪蓝纸皇冠', color: '#5689c6' }
+];
+
 const DEMO_HOST = {
   name: '小鹿',
   animalId: 'deer',
@@ -254,6 +299,9 @@ function defaultState() {
     wishes: seedWishes(),
     hostAnswers: null,
     guestResults: [],
+    adventOpened: [],
+    crackerCount: 0,
+    secretSanta: null,
     sound: true,
     liteMotion: false
   };
@@ -398,6 +446,32 @@ function loadState() {
       }))
     : [];
 
+  const adventOpened = Array.isArray(raw.adventOpened)
+    ? [...new Set(raw.adventOpened.map(Number).filter((day) => Number.isInteger(day) && day >= 1 && day <= 24))]
+    : [];
+
+  let secretSanta = null;
+  if (raw.secretSanta && Array.isArray(raw.secretSanta.participants) && Array.isArray(raw.secretSanta.assignment)) {
+    const participants = raw.secretSanta.participants
+      .filter((person) => person && String(person.name || '').trim())
+      .slice(0, 30)
+      .map((person) => ({
+        name: String(person.name).trim().slice(0, 20),
+        wish: String(person.wish || '').slice(0, 40)
+      }));
+    const assignment = raw.secretSanta.assignment
+      .filter((pair) => pair && pair.from && pair.to)
+      .slice(0, 30)
+      .map((pair) => ({
+        from: String(pair.from).slice(0, 20),
+        to: String(pair.to).slice(0, 20),
+        wish: String(pair.wish || '').slice(0, 40)
+      }));
+    secretSanta = participants.length >= 2 && assignment.length === participants.length
+      ? { participants, assignment, budget: String(raw.secretSanta.budget || '').slice(0, 20), drawnAt: Number(raw.secretSanta.drawnAt) || Date.now() }
+      : null;
+  }
+
   return {
     profile,
     tree: normalizeTree(raw.tree, profile),
@@ -405,6 +479,9 @@ function loadState() {
     wishes,
     hostAnswers: answers,
     guestResults,
+    adventOpened,
+    crackerCount: Math.max(0, Number(raw.crackerCount) || 0),
+    secretSanta,
     sound: raw.sound !== false,
     liteMotion: Boolean(raw.liteMotion)
   };
@@ -985,7 +1062,7 @@ let inviteHost = null;
 let pendingGift = null;
 
 function showRoute(route, options = {}) {
-  const validRoutes = ['home', 'gifts', 'tree', 'quiz'];
+  const validRoutes = ['home', 'gifts', 'tree', 'activities', 'quiz'];
   const nextRoute = validRoutes.includes(route) ? route : 'home';
   currentRoute = nextRoute;
 
@@ -998,6 +1075,7 @@ function showRoute(route, options = {}) {
 
   if (nextRoute === 'gifts') renderGiftWall();
   if (nextRoute === 'tree') renderTree();
+  if (nextRoute === 'activities') renderActivities();
   if (nextRoute === 'quiz') renderQuiz();
   if (nextRoute === 'home') renderWishList();
 
@@ -2200,6 +2278,247 @@ function handleWishSubmit(event) {
 }
 
 /* ------------------------------------------------------------
+   14. Christmas traditions & parlour games
+   ------------------------------------------------------------ */
+
+let crackerBusy = false;
+
+function renderActivities() {
+  renderAdventCalendar();
+  renderSecretSanta();
+}
+
+function renderAdventCalendar() {
+  const grid = $('#adventGrid');
+  if (!grid) return;
+  const opened = new Set(state.adventOpened);
+  grid.innerHTML = ADVENT_DAYS.map((entry) => {
+    const isOpen = opened.has(entry.day);
+    return `
+      <button class="advent-door${isOpen ? ' is-open' : ''}" type="button" data-advent-day="${entry.day}" style="--door-i:${entry.day}" aria-label="${isOpen ? `第 ${entry.day} 扇门已打开：${entry.country}${entry.title}` : `打开第 ${entry.day} 扇降临节日历`}">
+        <span class="advent-door-num">${String(entry.day).padStart(2, '0')}</span>
+        <span class="advent-door-face">${isOpen ? entry.flag : '✦'}</span>
+        <span class="advent-door-country">${isOpen ? esc(entry.country) : '待打开'}</span>
+      </button>
+    `;
+  }).join('');
+  const progress = $('#adventProgress');
+  if (progress) progress.textContent = `已打开 ${opened.size} / 24`;
+}
+
+function openAdventDoor(day) {
+  const entry = ADVENT_DAYS.find((item) => item.day === Number(day));
+  if (!entry) return;
+  if (!state.adventOpened.includes(entry.day)) {
+    state.adventOpened.push(entry.day);
+    state.adventOpened.sort((a, b) => a - b);
+    saveState();
+    renderAdventCalendar();
+    playBell();
+  }
+  openModal(`
+    <div class="modal-card advent-modal" role="dialog" aria-modal="true" aria-labelledby="adventModalTitle">
+      <button class="modal-close" type="button" data-modal-close aria-label="关闭">${icon('close')}</button>
+      <span class="kicker">DAY ${String(entry.day).padStart(2, '0')} · ${esc(entry.country)}</span>
+      <div class="advent-modal-head"><span class="advent-modal-flag">${entry.flag}</span><div><h3 id="adventModalTitle">${esc(entry.title)}</h3><p>${esc(entry.country)}的圣诞小传统</p></div></div>
+      <p>${esc(entry.text)}</p>
+      <div class="advent-try"><span>今晚可以试试</span><strong>${esc(entry.tryIt)}</strong></div>
+      <div class="modal-actions"><button class="btn btn-primary" type="button" data-modal-close>${icon('check')}收下这份小传统</button></div>
+    </div>
+  `);
+}
+
+function resetAdventCalendar() {
+  state.adventOpened = [];
+  saveState();
+  renderAdventCalendar();
+  playPop();
+  showToast('24 扇小门重新关上了，可以再数一遍', '❄️');
+}
+
+function pullCracker() {
+  if (crackerBusy) return;
+  crackerBusy = true;
+  const stage = $('#crackerStage');
+  const reveal = $('#crackerReveal');
+  const visual = $('#crackerVisual');
+  if (stage) stage.classList.add('is-pulling');
+  if (visual) visual.classList.add('is-pulling');
+  playWhoosh();
+  burstConfetti(36, { x: window.innerWidth * 0.5, y: window.innerHeight * 0.58 });
+  const finish = () => {
+    const joke = CRACKER_JOKES[Math.floor(Math.random() * CRACKER_JOKES.length)];
+    const crown = CRACKER_CROWNS[Math.floor(Math.random() * CRACKER_CROWNS.length)];
+    state.crackerCount += 1;
+    saveState();
+    if (reveal) {
+      reveal.hidden = false;
+      const crownEl = $('#crackerCrown');
+      if (crownEl) {
+        crownEl.textContent = '♛';
+        crownEl.style.setProperty('--crown-color', crown.color);
+      }
+      const headline = $('#crackerHeadline');
+      if (headline) headline.textContent = `你抽到了${crown.name}`;
+      const jokeEl = $('#crackerJoke');
+      if (jokeEl) jokeEl.textContent = `${joke.q} ${joke.a}`;
+      const fact = $('#crackerFact');
+      if (fact) fact.textContent = `这是你今晚第 ${state.crackerCount} 次拉响。纸拉炮由伦敦的 Tom Smith 在 1840 年代发明，传统里装着纸皇冠、笑话和小礼物。`;
+    }
+    playBell();
+    if (stage) stage.classList.remove('is-pulling');
+    if (visual) visual.classList.remove('is-pulling');
+    crackerBusy = false;
+  };
+  if (reduceMotion) finish();
+  else window.setTimeout(finish, 820);
+}
+
+function parseSecretSantaLines(value) {
+  const people = [];
+  const seen = new Set();
+  String(value || '').split(/\r?\n/).forEach((line) => {
+    const raw = line.trim();
+    if (!raw) return;
+    const parts = raw.split(/\s*[|｜]\s*/);
+    const name = (parts[0] || '').trim().slice(0, 20);
+    const wish = (parts[1] || '').trim().slice(0, 40);
+    if (!name) return;
+    const key = name.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    people.push({ name, wish });
+  });
+  return people;
+}
+
+function shuffleList(list) {
+  const copy = list.slice();
+  for (let index = copy.length - 1; index > 0; index -= 1) {
+    const swap = Math.floor(Math.random() * (index + 1));
+    [copy[index], copy[swap]] = [copy[swap], copy[index]];
+  }
+  return copy;
+}
+
+function drawSecretSanta(people) {
+  if (people.length < 2) return null;
+  for (let attempt = 0; attempt < 1200; attempt += 1) {
+    const targets = shuffleList(people.map((person) => person.name));
+    if (targets.every((target, index) => target !== people[index].name)) {
+      return people.map((person, index) => {
+        const target = people.find((candidate) => candidate.name === targets[index]);
+        return { from: person.name, to: targets[index], wish: target?.wish || '' };
+      });
+    }
+  }
+  return null;
+}
+
+function renderSecretSanta() {
+  const form = $('#secretSantaForm');
+  const result = $('#ssResult');
+  if (!form || !result) return;
+  const draw = state.secretSanta;
+  if (!draw) {
+    form.hidden = false;
+    result.hidden = true;
+    result.innerHTML = '';
+    return;
+  }
+  form.hidden = true;
+  result.hidden = false;
+  result.innerHTML = `
+    <div class="ss-result-head">
+      <div><span class="kicker">DRAW COMPLETE</span><h3>每个人抽到了谁？</h3><p>${esc(draw.budget || '预算由你们自己定')} · 抽签只保存在这台设备</p></div>
+      <button class="btn btn-ghost btn-small" type="button" id="ssRedraw">${icon('refresh')}<span>重新抽签</span></button>
+    </div>
+    <div class="ss-grid">
+      ${draw.assignment.map((pair) => `
+        <div class="ss-slip" data-ss-from="${esc(pair.from)}">
+          <button class="ss-slip-cover" type="button" aria-label="拆开 ${esc(pair.from)} 的签">
+            <span class="ss-slip-seal">?</span>
+            <strong>${esc(pair.from)}</strong>
+            <small>点击拆开你的签</small>
+          </button>
+          <div class="ss-slip-open">
+            <span class="ss-slip-label">你要送给</span>
+            <strong>${esc(pair.to)}</strong>
+            ${pair.wish ? `<p>TA 想要：${esc(pair.wish)}</p>` : '<p>给 TA 挑一份你觉得合适的小礼物。</p>'}
+            <small>${esc(draw.budget || '预算自定')}</small>
+            <button class="mini-copy" type="button" data-copy-ss="${esc(pair.from)}">${icon('copy')}复制这条签</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <p class="ss-note">想换一组？重新抽签会覆盖这组结果。礼物不需要很贵，匿名和认真更重要。</p>
+  `;
+}
+
+function handleSecretSantaSubmit(event) {
+  event.preventDefault();
+  const people = parseSecretSantaLines($('#ssNames').value);
+  if (people.length < 2) {
+    showToast('至少写两个参与者的名字，才能开始抽签', '🎁');
+    $('#ssNames').focus();
+    return;
+  }
+  if (people.length > 30) {
+    showToast('一张签最多 30 个人，分两轮玩吧', '❄️');
+    return;
+  }
+  const assignment = drawSecretSanta(people);
+  if (!assignment) {
+    showToast('这次没抽成，再试一次吧', '🎲');
+    return;
+  }
+  state.secretSanta = {
+    participants: people,
+    assignment,
+    budget: $('#ssBudget').value.trim().slice(0, 20),
+    drawnAt: Date.now()
+  };
+  saveState();
+  renderSecretSanta();
+  playJingle();
+  burstConfetti(42, { x: window.innerWidth * 0.5, y: window.innerHeight * 0.42 });
+  showToast(`${people.length} 个人都抽到名字啦，点开自己的那张签`, '🎁');
+}
+
+function importSecretSantaFromTree() {
+  const names = publicTreeUsers().map((user) => user.name);
+  if (!names.length) {
+    showToast('公共圣诞树上还没有人，先请大家上树吧', '🌲');
+    return;
+  }
+  $('#ssNames').value = names.map((name) => `${name} | `).join('\n');
+  playPop();
+  showToast('已经把树上的朋友放进名单，补上心愿就可以抽签', '🐾');
+}
+
+function copySecretSantaResult(from) {
+  const draw = state.secretSanta;
+  const pair = draw?.assignment.find((item) => item.from === from);
+  if (!pair) return;
+  const text = `${from}，你要送给 ${pair.to} 一份小礼物${draw.budget ? `（预算：${draw.budget}）` : ''}。${pair.wish ? `TA 想要：${pair.wish}。` : ''}别让对方猜到是你。🎄`;
+  copyText(text).then((success) => {
+    showToast(success ? '这条签已经复制，发给对应的人吧' : '复制失败了，请允许剪贴板权限', success ? '🔗' : '❄️');
+  });
+}
+
+function resetSecretSanta() {
+  const previous = state.secretSanta;
+  state.secretSanta = null;
+  saveState();
+  if (previous) {
+    $('#ssNames').value = previous.participants.map((person) => `${person.name}${person.wish ? ` | ${person.wish}` : ''}`).join('\n');
+    $('#ssBudget').value = previous.budget || '';
+  }
+  renderSecretSanta();
+  showToast('抽签结果已经收起来，可以换一组人再抽', '🎲');
+}
+
+/* ------------------------------------------------------------
    14. Quiz
    ------------------------------------------------------------ */
 
@@ -3004,6 +3323,36 @@ function bindEvents() {
     button.innerHTML = isLit ? '<i></i>关灯' : '<i></i>点亮';
     playBell();
     showToast(isLit ? '圣诞树亮起来啦' : '让树先睡一会儿', isLit ? '✨' : '🌙');
+  });
+
+  // Traditions / parlour games
+  $('#adventGrid').addEventListener('click', (event) => {
+    const door = event.target.closest('[data-advent-day]');
+    if (door) openAdventDoor(door.dataset.adventDay);
+  });
+  $('#resetAdvent').addEventListener('click', resetAdventCalendar);
+  $('#pullCracker').addEventListener('click', pullCracker);
+  $('#secretSantaForm').addEventListener('submit', handleSecretSantaSubmit);
+  $('#ssImport').addEventListener('click', importSecretSantaFromTree);
+  $('#ssResult').addEventListener('click', (event) => {
+    const redraw = event.target.closest('#ssRedraw');
+    if (redraw) {
+      resetSecretSanta();
+      return;
+    }
+    const copyButton = event.target.closest('[data-copy-ss]');
+    if (copyButton) {
+      copySecretSantaResult(copyButton.dataset.copySs);
+      return;
+    }
+    const cover = event.target.closest('.ss-slip-cover');
+    if (cover) {
+      const slip = cover.closest('.ss-slip');
+      if (slip) {
+        slip.classList.add('is-open');
+        playPop();
+      }
+    }
   });
 
   // Quiz
