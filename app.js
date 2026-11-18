@@ -119,6 +119,35 @@ const ADVENT_DAYS = [
   { day: 24, flag: '🇬🇷', country: '希腊', title: '圣诞小船与第十二夜', text: '希腊一些岛屿会装饰圣诞小船（karavaki），而不是圣诞树。圣诞季一直延续到 1 月 6 日主显节，也就是“第十二夜”。', tryIt: '今晚把灯留到很晚，给这棵树说一句晚安。' }
 ];
 
+const ADVENT_COUNTRY_CODES = {
+  '德国': 'DE',
+  '英国': 'UK',
+  '欧美办公室': 'WW',
+  '墨西哥': 'MX',
+  '瑞典': 'SE',
+  '菲律宾': 'PH',
+  '冰岛': 'IS',
+  '日本': 'JP',
+  '波兰': 'PL',
+  '乌克兰': 'UA',
+  '挪威': 'NO',
+  '捷克': 'CZ',
+  '荷兰': 'NL',
+  '加泰罗尼亚': 'CT',
+  '委内瑞拉': 'VE',
+  '澳大利亚': 'AU',
+  '埃塞俄比亚': 'ET',
+  '意大利': 'IT',
+  '美国': 'US',
+  '丹麦': 'DK',
+  '芬兰': 'FI',
+  '法国': 'FR',
+  '希腊': 'GR'
+};
+ADVENT_DAYS.forEach((entry) => {
+  entry.code = ADVENT_COUNTRY_CODES[entry.country] || 'XX';
+});
+
 const CRACKER_JOKES = [
   { q: '有腹肌的雪人叫什么？', a: '腹肌雪人——Abdominal Snowman。' },
   { q: '圣诞树为什么不擅长织毛衣？', a: '因为它总是掉针——drop needles。' },
@@ -2286,29 +2315,97 @@ let crackerBusy = false;
 function renderActivities() {
   renderAdventCalendar();
   renderSecretSanta();
+  ensureAdventClock();
+}
+
+let adventRefreshTimer = 0;
+
+function adventStartDate(now = new Date()) {
+  return new Date(now.getFullYear(), 11, 1, 0, 0, 0, 0);
+}
+
+function adventUnlockedCount(now = new Date()) {
+  const start = adventStartDate(now);
+  const diff = Math.floor((now.getTime() - start.getTime()) / 86400000) + 1;
+  return clamp(diff, 0, 24);
+}
+
+function adventDayUnlocked(day, now = new Date()) {
+  const unlockAt = new Date(now.getFullYear(), 11, day, 0, 0, 0, 0);
+  return now.getTime() >= unlockAt.getTime();
+}
+
+function adventNextUnlockText(now = new Date()) {
+  const unlocked = adventUnlockedCount(now);
+  if (unlocked >= 24) return '二十四扇门都已经打开。圣诞快乐。';
+  const nextDay = unlocked + 1;
+  const unlockAt = new Date(now.getFullYear(), 11, nextDay, 0, 0, 0, 0);
+  const diff = Math.max(0, unlockAt.getTime() - now.getTime());
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const minutes = Math.floor((diff % 3600000) / 60000);
+  const countdown = days > 0 ? `${days} 天 ${hours} 小时` : hours > 0 ? `${hours} 小时 ${minutes} 分钟` : `${Math.max(1, minutes)} 分钟`;
+  if (unlocked === 0) return `第一扇门将在 12 月 1 日 00:00 自动解锁，还有 ${countdown}。打开后会一直亮着。`;
+  return `下一扇门：12 月 ${nextDay} 日 00:00 自动解锁，还有 ${countdown}。已经打开的门不会再关上。`;
+}
+
+function ensureAdventClock() {
+  if (adventRefreshTimer) return;
+  adventRefreshTimer = window.setInterval(() => {
+    if (currentRoute !== 'activities') return;
+    const note = $('#adventUnlockNote');
+    if (note) note.textContent = adventNextUnlockText();
+    const nextCount = adventUnlockedCount();
+    const currentDoors = $$('#adventGrid .advent-door:not(.is-locked)').length;
+    if (nextCount !== currentDoors) renderAdventCalendar();
+  }, 60000);
 }
 
 function renderAdventCalendar() {
   const grid = $('#adventGrid');
   if (!grid) return;
-  const opened = new Set(state.adventOpened);
+  const now = new Date();
+  const unlockedCount = adventUnlockedCount(now);
+  const opened = new Set(state.adventOpened.filter((day) => adventDayUnlocked(day, now)));
+  if (opened.size !== state.adventOpened.length) {
+    state.adventOpened = [...opened].sort((a, b) => a - b);
+    saveState();
+  }
   grid.innerHTML = ADVENT_DAYS.map((entry) => {
     const isOpen = opened.has(entry.day);
+    const isUnlocked = entry.day <= unlockedCount;
+    const isToday = entry.day === unlockedCount && !isOpen;
+    const dateLabel = `12.${String(entry.day).padStart(2, '0')}`;
+    if (!isUnlocked) {
+      return `
+        <button class="advent-door is-locked" type="button" data-advent-day="${entry.day}" aria-label="第 ${entry.day} 扇门将在 12 月 ${entry.day} 日解锁">
+          <span class="advent-door-num">${String(entry.day).padStart(2, '0')}</span>
+          <span class="advent-door-lock"><svg><use href="#i-lock"/></svg></span>
+          <span class="advent-door-country">${dateLabel} 解锁</span>
+        </button>
+      `;
+    }
     return `
-      <button class="advent-door${isOpen ? ' is-open' : ''}" type="button" data-advent-day="${entry.day}" style="--door-i:${entry.day}" aria-label="${isOpen ? `第 ${entry.day} 扇门已打开：${entry.country}${entry.title}` : `打开第 ${entry.day} 扇降临节日历`}">
+      <button class="advent-door${isOpen ? ' is-open' : ''}${isToday ? ' is-today' : ''}" type="button" data-advent-day="${entry.day}" aria-label="${isOpen ? `第 ${entry.day} 扇门已打开：${entry.country}${entry.title}` : `打开第 ${entry.day} 扇门：${entry.country}`}">
         <span class="advent-door-num">${String(entry.day).padStart(2, '0')}</span>
-        <span class="advent-door-face">${isOpen ? entry.flag : '✦'}</span>
-        <span class="advent-door-country">${isOpen ? esc(entry.country) : '待打开'}</span>
+        ${isOpen ? `<span class="advent-door-code">${esc(entry.code)}</span>` : '<span class="advent-door-face">✦</span>'}
+        <span class="advent-door-country">${isOpen ? esc(entry.country) : isToday ? '今天可打开' : dateLabel}</span>
       </button>
     `;
   }).join('');
   const progress = $('#adventProgress');
-  if (progress) progress.textContent = `已打开 ${opened.size} / 24`;
+  if (progress) progress.textContent = `已打开 ${opened.size} / 24 · 已解锁 ${unlockedCount}`;
+  const note = $('#adventUnlockNote');
+  if (note) note.textContent = adventNextUnlockText(now);
 }
 
 function openAdventDoor(day) {
   const entry = ADVENT_DAYS.find((item) => item.day === Number(day));
   if (!entry) return;
+  if (!adventDayUnlocked(entry.day)) {
+    showToast(`第 ${entry.day} 扇门会在 12 月 ${entry.day} 日 00:00 自动解锁`, '🔒');
+    return;
+  }
   if (!state.adventOpened.includes(entry.day)) {
     state.adventOpened.push(entry.day);
     state.adventOpened.sort((a, b) => a - b);
@@ -2320,20 +2417,12 @@ function openAdventDoor(day) {
     <div class="modal-card advent-modal" role="dialog" aria-modal="true" aria-labelledby="adventModalTitle">
       <button class="modal-close" type="button" data-modal-close aria-label="关闭">${icon('close')}</button>
       <span class="kicker">DAY ${String(entry.day).padStart(2, '0')} · ${esc(entry.country)}</span>
-      <div class="advent-modal-head"><span class="advent-modal-flag">${entry.flag}</span><div><h3 id="adventModalTitle">${esc(entry.title)}</h3><p>${esc(entry.country)}的圣诞小传统</p></div></div>
+      <div class="advent-modal-head"><span class="advent-modal-flag">${esc(entry.code)}</span><div><h3 id="adventModalTitle">${esc(entry.title)}</h3><p>${esc(entry.country)}的圣诞小传统</p></div></div>
       <p>${esc(entry.text)}</p>
       <div class="advent-try"><span>今晚可以试试</span><strong>${esc(entry.tryIt)}</strong></div>
       <div class="modal-actions"><button class="btn btn-primary" type="button" data-modal-close>${icon('check')}收下这份小传统</button></div>
     </div>
   `);
-}
-
-function resetAdventCalendar() {
-  state.adventOpened = [];
-  saveState();
-  renderAdventCalendar();
-  playPop();
-  showToast('24 扇小门重新关上了，可以再数一遍', '❄️');
 }
 
 function pullCracker() {
@@ -2430,16 +2519,16 @@ function renderSecretSanta() {
   result.hidden = false;
   result.innerHTML = `
     <div class="ss-result-head">
-      <div><span class="kicker">DRAW COMPLETE</span><h3>每个人抽到了谁？</h3><p>${esc(draw.budget || '预算由你们自己定')} · 抽签只保存在这台设备</p></div>
-      <button class="btn btn-ghost btn-small" type="button" id="ssRedraw">${icon('refresh')}<span>重新抽签</span></button>
+      <div><span class="kicker">DRAW COMPLETE</span><h3>抽名字完成。</h3><p>${esc(draw.budget || '预算由你们自己定')} · 名字只保存在这台设备</p></div>
+      <button class="btn btn-ghost btn-small" type="button" id="ssRedraw">${icon('refresh')}<span>重新抽名字</span></button>
     </div>
     <div class="ss-grid">
       ${draw.assignment.map((pair) => `
         <div class="ss-slip" data-ss-from="${esc(pair.from)}">
           <button class="ss-slip-cover" type="button" aria-label="拆开 ${esc(pair.from)} 的签">
-            <span class="ss-slip-seal">?</span>
+            <span class="ss-slip-seal">✉</span>
             <strong>${esc(pair.from)}</strong>
-            <small>点击拆开你的签</small>
+            <small>点开查看你要送给谁</small>
           </button>
           <div class="ss-slip-open">
             <span class="ss-slip-label">你要送给</span>
@@ -2451,7 +2540,7 @@ function renderSecretSanta() {
         </div>
       `).join('')}
     </div>
-    <p class="ss-note">想换一组？重新抽签会覆盖这组结果。礼物不需要很贵，匿名和认真更重要。</p>
+    <p class="ss-note">想换一组？重新抽名字会覆盖这组结果。礼物不需要很贵，匿名和认真更重要。</p>
   `;
 }
 
@@ -2515,7 +2604,7 @@ function resetSecretSanta() {
     $('#ssBudget').value = previous.budget || '';
   }
   renderSecretSanta();
-  showToast('抽签结果已经收起来，可以换一组人再抽', '🎲');
+  showToast('名字已经收起来，可以换一组人重新抽', '🎲');
 }
 
 /* ------------------------------------------------------------
@@ -3330,7 +3419,6 @@ function bindEvents() {
     const door = event.target.closest('[data-advent-day]');
     if (door) openAdventDoor(door.dataset.adventDay);
   });
-  $('#resetAdvent').addEventListener('click', resetAdventCalendar);
   $('#pullCracker').addEventListener('click', pullCracker);
   $('#secretSantaForm').addEventListener('submit', handleSecretSantaSubmit);
   $('#ssImport').addEventListener('click', importSecretSantaFromTree);
