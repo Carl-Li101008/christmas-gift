@@ -7929,3 +7929,154 @@ body.perf-lite #onboarding .onboard-santa {
   .ss-slip, .ss-slip-cover, .ss-slip-open { min-height: 124px; }
 }
 
+/* Date-gated Advent calendar + clearer Secret Santa steps */
+.advent-door.is-locked {
+  border-color: #e5d3b9;
+  background:
+    repeating-linear-gradient(135deg, rgba(153, 117, 80, 0.035) 0 8px, transparent 8px 16px),
+    #f8efdf;
+  color: #b19678;
+  box-shadow: 0 3px 0 #e2cfb3, inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  cursor: not-allowed;
+}
+
+.advent-door.is-locked:hover {
+  transform: none;
+  border-color: #e5d3b9;
+  box-shadow: 0 3px 0 #e2cfb3, inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.advent-door.is-locked .advent-door-num {
+  color: #bda98f;
+}
+
+.advent-door-lock {
+  display: grid;
+  place-items: center;
+  color: #b69d7e;
+}
+
+.advent-door-lock svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.advent-door.is-locked .advent-door-country {
+  color: #b29b7e;
+  font-size: 6.5px;
+}
+
+.advent-door.is-today {
+  border-color: #c44a43;
+  background:
+    radial-gradient(80% 80% at 50% 0%, rgba(255, 211, 77, 0.24), transparent 70%),
+    #fffaf0;
+  box-shadow: 0 3px 0 #d9b78c, 0 0 0 3px rgba(198, 60, 67, 0.12), 0 8px 18px rgba(110, 60, 32, 0.1);
+}
+
+.advent-door.is-today .advent-door-face {
+  color: #c63c43;
+}
+
+.advent-door.is-today .advent-door-country {
+  color: #b9473f;
+}
+
+.ss-howto {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 15px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 240, 211, 0.12);
+}
+
+.ss-howto span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #aebfd7;
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.ss-howto b {
+  color: #e3b35e;
+  font-family: var(--display);
+  font-size: 8px;
+  letter-spacing: 0.04em;
+}
+
+.ss-payment-note {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border: 1px dashed rgba(255, 240, 211, 0.14);
+  border-radius: 10px;
+  color: #91a5c2;
+  font-size: 8px;
+  line-height: 1.65;
+}
+
+.ss-result-head .btn span {
+  white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  .ss-howto {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .advent-door-lock svg {
+    width: 17px;
+    height: 17px;
+  }
+}
+
+.advent-door-code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 24px;
+  border: 1px solid rgba(255, 244, 219, 0.22);
+  border-radius: 7px;
+  background: rgba(255, 244, 219, 0.1);
+  color: #fff0d1;
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+.advent-door.is-open .advent-door-code {
+  border-color: rgba(255, 214, 117, 0.34);
+  color: #ffda83;
+}
+
+.advent-modal-flag {
+  color: #b9473f;
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 520px) {
+  .advent-door-code {
+    min-width: 28px;
+    height: 20px;
+    font-size: 11px;
+  }
+
+  .advent-modal-flag {
+    font-size: 16px;
+  }
+}
